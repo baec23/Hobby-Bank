@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "645644400405",
+    "project_id": "hobby-bank",
+    "storage_bucket": "hobby-bank.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:645644400405:android:6495ed9a971b26288e5b1c",
+        "android_client_info": {
+          "package_name": "com.baec23.hobbybank"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "645644400405-np2kissuk45jutu65uo3hdsdrcar17vk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCWcfxjpUOWq3mLwFyznjMi4SOgs2W4kE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "645644400405-np2kissuk45jutu65uo3hdsdrcar17vk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
