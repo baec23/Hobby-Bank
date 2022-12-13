@@ -6,11 +6,16 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.baec23.hobbybank.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SignupScreenViewModel @Inject constructor() : ViewModel() {
+class SignupScreenViewModel @Inject constructor(
+    private val userRepository: UserRepository,
+) : ViewModel() {
 
     private val TAG = "SignupScreenViewModel: "
 
@@ -21,6 +26,7 @@ class SignupScreenViewModel @Inject constructor() : ViewModel() {
 
     fun onEvent(event: SignupUiEvent) {
         when (event) {
+
             is SignupUiEvent.UsernameChanged -> {
                 _formState.value = _formState.value.copy(
                     username = event.username
@@ -48,9 +54,22 @@ class SignupScreenViewModel @Inject constructor() : ViewModel() {
             }
             SignupUiEvent.SubmitPressed -> {
                 Log.d(TAG, "onEvent: Submit Pressed")
+                viewModelScope.launch {
+                    userRepository.getId()
+
+                    userRepository.saveUser(
+                        SignupFormState(
+                            _formState.value.username,
+                            _formState.value.password1,
+                            _formState.value.displayName,
+                            _formState.value.phoneNumber
+                        )
+                    )
+                }
             }
         }
         checkIfFormIsValid()
+
     }
 
     private fun checkIfFormIsValid(){

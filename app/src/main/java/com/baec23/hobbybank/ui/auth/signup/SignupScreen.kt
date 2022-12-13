@@ -49,15 +49,13 @@ fun SignupScreen(
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            OutlinedCard(modifier = Modifier.fillMaxWidth(0.8f)) {
-                Text(
-                    modifier = Modifier
-                        .padding(10.dp)
-                        .align(Alignment.CenterHorizontally),
-                    text = "SIGN UP",
-                    fontSize = 30.sp
-                )
-            }
+            Text(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .align(Alignment.CenterHorizontally),
+                text = "SIGN UP",
+                fontSize = 30.sp
+            )
             Spacer(modifier = Modifier.height(10.dp))
             OutlinedTextField(
                 value = username,
