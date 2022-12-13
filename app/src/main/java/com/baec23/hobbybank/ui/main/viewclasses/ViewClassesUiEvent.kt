@@ -1,4 +1,4 @@
-package com.baec23.hobbybank.ui.viewclasses
+package com.baec23.hobbybank.ui.main.viewclasses
 
 import com.baec23.hobbybank.model.HobbyClass
 

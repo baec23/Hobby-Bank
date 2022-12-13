@@ -1,4 +1,4 @@
-package com.baec23.hobbybank.ui.createclass
+package com.baec23.hobbybank.ui.main.createclass
 
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
@@ -48,20 +48,18 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.rememberAsyncImagePainter
 
-@RequiresApi(Build.VERSION_CODES.P)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateClassScreen(
-    formState: CreateClassFormState,
-    onNameChanged: (String) -> Unit,
-    onDetailsChanged: (String) -> Unit,
-    onCreatePressed: () -> Unit,
+    viewModel: CreateClassViewModel = hiltViewModel(),
 ) {
     var imageUri by remember { mutableStateOf<Uri?>(null) }
     val bitmap = remember { mutableStateOf<Bitmap?>(null) }
+    val formState by viewModel.formState
     val currName = formState.name
     val currDetails = formState.details
     val context = LocalContext.current
@@ -113,7 +111,7 @@ fun CreateClassScreen(
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = currName,
-            onValueChange = onNameChanged,
+            onValueChange = { viewModel.onEvent(CreateClassUiEvent.NameChanged(it)) },
             label = { Text("Class Name") })
 
         Spacer(modifier = Modifier.height(10.dp))
@@ -121,21 +119,20 @@ fun CreateClassScreen(
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = currDetails,
-            onValueChange = onDetailsChanged,
+            onValueChange =  { viewModel.onEvent(CreateClassUiEvent.DetailsChanged(it)) },
             minLines = 50,
             maxLines = 50,
             label = { Text("Class Details") })
 
         Spacer(modifier = Modifier.height(10.dp))
         OutlinedButton(
-            onClick = onCreatePressed,
+            onClick =  { viewModel.onEvent(CreateClassUiEvent.CreatePressed) },
             shape = RoundedCornerShape(5.dp)
         ) {
             Text("Create")
         }
     }
 }
-
 
 @Composable
 fun JobImagesList(
@@ -217,13 +214,5 @@ fun ImageCard(
 @Preview
 @Composable
 fun CreateClassScreenPreview() {
-    Surface(modifier = Modifier.fillMaxSize()) {
-        CreateClassScreen(
-            formState = CreateClassFormState("name", "details"),
-            onNameChanged = {},
-            onDetailsChanged = {}
-        ) {
-
-        }
-    }
+    CreateClassScreen()
 }

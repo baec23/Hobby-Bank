@@ -1,4 +1,4 @@
-package com.baec23.hobbybank.ui.viewclasses
+package com.baec23.hobbybank.ui.main.viewclasses
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height

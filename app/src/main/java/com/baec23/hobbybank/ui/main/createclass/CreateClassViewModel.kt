@@ -1,4 +1,4 @@
-package com.baec23.hobbybank.ui.createclass
+package com.baec23.hobbybank.ui.main.createclass
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State

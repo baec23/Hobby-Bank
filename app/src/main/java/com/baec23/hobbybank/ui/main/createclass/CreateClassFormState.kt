@@ -1,4 +1,4 @@
-package com.baec23.hobbybank.ui.createclass
+package com.baec23.hobbybank.ui.main.createclass
 
 data class CreateClassFormState (
     val name: String = "",
