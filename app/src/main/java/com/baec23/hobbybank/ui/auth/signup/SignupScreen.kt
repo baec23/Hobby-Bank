@@ -23,14 +23,10 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignupScreen(
-    navController: NavHostController,
-    viewModel: SignupScreenViewModel = hiltViewModel()
-) {
+fun SignupScreen(viewModel: SignupScreenViewModel = hiltViewModel()) {
     val formState by viewModel.formState
     val username = formState.username
     val password1 = formState.password1

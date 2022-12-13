@@ -2,6 +2,9 @@ package com.baec23.hobbybank.di
 
 import com.baec23.hobbybank.repository.DataStoreRepository
 import android.content.Context
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.ComposeNavigator
+import androidx.navigation.compose.DialogNavigator
 import com.baec23.hobbybank.repository.HobbyClassRepository
 import com.baec23.hobbybank.repository.UserRepository
 import dagger.Module
@@ -26,4 +29,10 @@ object AppModule {
     @Provides
     fun provideDataStoreRepository(@ApplicationContext context: Context) =
         DataStoreRepository(context)
+    @Singleton
+    @Provides
+    fun provideNavController(@ApplicationContext context: Context) = NavHostController(context).apply {
+        navigatorProvider.addNavigator(ComposeNavigator())
+        navigatorProvider.addNavigator(DialogNavigator())
+    }
 }

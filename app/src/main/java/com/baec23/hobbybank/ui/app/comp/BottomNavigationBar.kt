@@ -19,31 +19,32 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.baec23.hobbybank.navigation.ContentNavScreen
+import com.baec23.hobbybank.navigation.NavScreen
+import com.baec23.hobbybank.navigation.navgraph.BottomNavItem
 
-data class BottomNavItem(
-    val name: String,
-    val screen: ContentNavScreen,
-    val icon: ImageVector,
-)
 
 @Composable
 fun BottomNavigationBar(
     modifier: Modifier = Modifier,
     items: List<BottomNavItem>,
+    currScreen: NavScreen,
     onItemClick: (BottomNavItem) -> Unit
 ) {
-    var selectedItem by remember { mutableStateOf(items[0]) }
     NavigationBar(
         modifier = modifier,
         containerColor = MaterialTheme.colorScheme.onPrimary,
     ) {
         items.forEach { item ->
-            val isSelected = item == selectedItem
+
+            val isSelected =
+                if (currScreen.parentRoute != null)
+                    item.screen.route == currScreen.parentRoute
+                else
+                    item.screen.route == currScreen.route
+
             NavigationBarItem(
                 selected = isSelected,
                 colors = NavigationBarItemDefaults.colors(
@@ -76,7 +77,6 @@ fun BottomNavigationBar(
                     }
                 },
                 onClick = {
-                    selectedItem = item
                     onItemClick(item)
                 })
         }
