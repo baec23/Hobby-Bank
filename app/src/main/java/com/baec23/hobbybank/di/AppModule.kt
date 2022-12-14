@@ -1,12 +1,14 @@
 package com.baec23.hobbybank.di
 
-import com.baec23.hobbybank.repository.DataStoreRepository
 import android.content.Context
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.compose.DialogNavigator
+import com.baec23.hobbybank.navigation.NavService
+import com.baec23.hobbybank.repository.DataStoreRepository
 import com.baec23.hobbybank.repository.HobbyClassRepository
 import com.baec23.hobbybank.repository.UserRepository
+import com.baec23.hobbybank.service.SnackbarService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,4 +37,11 @@ object AppModule {
         navigatorProvider.addNavigator(ComposeNavigator())
         navigatorProvider.addNavigator(DialogNavigator())
     }
+    @Singleton
+    @Provides
+    fun provideNavService(navController: NavHostController) = NavService(navController = navController)
+
+    @Singleton
+    @Provides
+    fun provideSnackbarService() = SnackbarService()
 }

@@ -28,13 +28,13 @@ fun App(
     Log.d(TAG, "App: RECOMPOSED")
 
     Scaffold(
-        snackbarHost = { SnackbarHost(hostState = appViewModel.snackbarState) },
+        snackbarHost = { SnackbarHost(hostState = appViewModel.snackbarService.snackbarState) },
         topBar = {
             if (currScreen.shouldShowNavBars) {
                 TopBar(
                     modifier = Modifier.height(60.dp),
                     screenName = currScreen.displayName,
-                    onLogout = { appViewModel.showSnackbar("AHHH") })
+                    onLogout = { appViewModel.onEvent(AppUiEvent.LogoutPressed) })
             }
         },
         bottomBar = {
@@ -45,7 +45,7 @@ fun App(
                     items = bottomNavItems,
                     currScreen = currScreen
                 ) {
-                    appViewModel.doNavigate(it.screen)
+                    appViewModel.onEvent(AppUiEvent.NavbarButtonPressed(it.screen))
                 }
             }
         }

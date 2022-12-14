@@ -10,24 +10,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.baec23.hobbybank.navigation.CONTENT_NAV_GRAPH_ROUTE
-import com.baec23.hobbybank.navigation.NavScreen
-import com.baec23.hobbybank.ui.app.AppViewModel
 
 @Composable
-fun LoginScreen(appViewModel: AppViewModel = hiltViewModel()) {
+fun LoginScreen(
+    viewModel: LoginViewModel = hiltViewModel()
+) {
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             OutlinedButton(onClick = {
-                appViewModel.showSnackbar("Hello! Login Pressed!")
-                appViewModel.doNavigate(CONTENT_NAV_GRAPH_ROUTE, true)
+                viewModel.onEvent(LoginUiEvent.LoginPressed)
             }) {
                 Text("Login!")
             }
-            OutlinedButton(onClick = { appViewModel.doNavigate(NavScreen.Signup.route) }) {
+            OutlinedButton(onClick = { viewModel.onEvent(LoginUiEvent.SignUpPressed) }) {
                 Text("Sign up!")
             }
         }

@@ -3,10 +3,8 @@ package com.baec23.hobbybank.ui.main.createclass
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
-import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,12 +25,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -43,13 +41,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.SubcomposeAsyncImage
 import coil.compose.rememberAsyncImagePainter
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -59,12 +55,11 @@ fun CreateClassScreen(
 ) {
     var imageUri by remember { mutableStateOf<Uri?>(null) }
     val bitmap = remember { mutableStateOf<Bitmap?>(null) }
+    val addedBitmaps by viewModel.addedImages
     val formState by viewModel.formState
     val currName = formState.name
     val currDetails = formState.details
     val context = LocalContext.current
-
-    var addedBitmaps by remember{ mutableStateOf<List<Bitmap>>(listOf()) }
 
     val launcher = rememberLauncherForActivityResult(
         contract =
@@ -79,9 +74,7 @@ fun CreateClassScreen(
                 .createSource(context.contentResolver, it)
             bitmap.value = ImageDecoder.decodeBitmap(source)
             bitmap.value?.let { bitmap ->
-                val mutableAddedBitmaps = addedBitmaps.toMutableList()
-                mutableAddedBitmaps.add(bitmap)
-                addedBitmaps = mutableAddedBitmaps.toList()
+                viewModel.onEvent(CreateClassUiEvent.ImageAdded(bitmap))
             }
         }
     }
@@ -105,7 +98,10 @@ fun CreateClassScreen(
             ) {
                 launcher.launch("image/*")
             }
-            JobImagesList(addedBitmaps)
+            JobImagesList(
+                bitmaps = addedBitmaps,
+                onRemove = { viewModel.onEvent(CreateClassUiEvent.ImageRemoved(it)) }
+            )
         }
         Spacer(modifier = Modifier.height(25.dp))
         OutlinedTextField(
@@ -119,14 +115,14 @@ fun CreateClassScreen(
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = currDetails,
-            onValueChange =  { viewModel.onEvent(CreateClassUiEvent.DetailsChanged(it)) },
-            minLines = 50,
-            maxLines = 50,
+            onValueChange = { viewModel.onEvent(CreateClassUiEvent.DetailsChanged(it)) },
+            minLines = 10,
+            maxLines = 10,
             label = { Text("Class Details") })
 
         Spacer(modifier = Modifier.height(10.dp))
         OutlinedButton(
-            onClick =  { viewModel.onEvent(CreateClassUiEvent.CreatePressed) },
+            onClick = { viewModel.onEvent(CreateClassUiEvent.CreatePressed) },
             shape = RoundedCornerShape(5.dp)
         ) {
             Text("Create")
@@ -137,18 +133,21 @@ fun CreateClassScreen(
 @Composable
 fun JobImagesList(
     bitmaps: List<Bitmap>,
+    onRemove: (Bitmap) -> Unit = {}
 ) {
     LazyRow(content = {
         items(count = bitmaps.size) {
             AddedImage(
-                painter = rememberAsyncImagePainter(bitmaps[it]),
                 modifier = Modifier
                     .width(100.dp)
-                    .aspectRatio(1f)
+                    .aspectRatio(1f),
+                bitmap = bitmaps[it],
+                onRemove = onRemove
             )
         }
     })
 }
+
 
 @Composable
 fun AddImageButton(
@@ -179,11 +178,27 @@ fun AddImageButton(
 @Composable
 fun AddedImage(
     modifier: Modifier = Modifier,
-    painter: Painter,
+    onRemove: (Bitmap) -> Unit = {},
+    bitmap: Bitmap,
 ) {
+    var expanded by remember { mutableStateOf(false) }
+    val painter = rememberAsyncImagePainter(bitmap)
+
     ImageCard(
         modifier = modifier,
+        onClick = { expanded = true }
     ) {
+        DropdownMenu(
+            modifier = Modifier.padding(0.dp),
+            expanded = expanded,
+            onDismissRequest = { expanded = false }) {
+            DropdownMenuItem(
+                text = { Text("Remove") },
+                onClick = {
+                    onRemove(bitmap)
+                    expanded = false
+                })
+        }
         Image(
             painter = painter,
             contentDescription = "Added Image",

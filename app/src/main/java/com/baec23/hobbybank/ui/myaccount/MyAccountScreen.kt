@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.List
@@ -17,8 +18,8 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -39,7 +40,11 @@ fun MyAccountScreen(
     val myHobbyClasses by viewModel.myHobbyClasses.collectAsState()
     Column(modifier = Modifier.fillMaxWidth()) {
         UserDetailsSection(user = currUser)
-        MyClassesSection(myHobbyClasses = myHobbyClasses)
+        MyClassesSection(
+            myHobbyClasses = myHobbyClasses,
+            onClassClicked = {},
+            onCreateNewClassClicked = { viewModel.onEvent(MyAccountUiEvent.CreateNewClassPressed) }
+        )
     }
 }
 
@@ -59,14 +64,20 @@ fun UserDetailsSection(
 
 @Composable
 fun MyClassesSection(
-    myHobbyClasses: List<HobbyClass>
+    myHobbyClasses: List<HobbyClass>,
+    onClassClicked: (HobbyClass) -> Unit,
+    onCreateNewClassClicked: () -> Unit,
 ) {
+    val a = Result.success("a")
+    a.getOrElse {  }
+
     PreferencesSection(
         modifier = Modifier.fillMaxWidth(),
         headerTitle = "My Classes",
         headerIcon = Icons.Rounded.List
     ) {
-        OutlinedButton(modifier = Modifier.fillMaxWidth(), onClick = { }) {
+        TextButton(onClick = onCreateNewClassClicked) {
+            Icon(imageVector = Icons.Default.Add, contentDescription = null)
             Text("Create New Class")
         }
         LazyColumn(

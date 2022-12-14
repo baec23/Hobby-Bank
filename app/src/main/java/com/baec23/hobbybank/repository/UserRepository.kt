@@ -5,5 +5,6 @@ import dagger.hilt.android.scopes.ActivityScoped
 
 @ActivityScoped
 class UserRepository {
-    val currUser = User(displayName = "test", username = "test", id = "testId")
+    var currUser = User(displayName = "test", username = "test", id = "testId")
+        private set
 }
