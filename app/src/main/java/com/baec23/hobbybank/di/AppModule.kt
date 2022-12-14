@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.compose.DialogNavigator
-import com.baec23.hobbybank.navigation.NavService
+import com.baec23.hobbybank.service.NavService
 import com.baec23.hobbybank.repository.DataStoreRepository
 import com.baec23.hobbybank.repository.HobbyClassRepository
 import com.baec23.hobbybank.repository.UserRepository

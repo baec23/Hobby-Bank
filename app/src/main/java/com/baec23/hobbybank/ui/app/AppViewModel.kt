@@ -3,7 +3,7 @@ package com.baec23.hobbybank.ui.app
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
 import com.baec23.hobbybank.navigation.NavScreen
-import com.baec23.hobbybank.navigation.NavService
+import com.baec23.hobbybank.service.NavService
 import com.baec23.hobbybank.repository.DataStoreRepository
 import com.baec23.hobbybank.repository.UserRepository
 import com.baec23.hobbybank.service.SnackbarService

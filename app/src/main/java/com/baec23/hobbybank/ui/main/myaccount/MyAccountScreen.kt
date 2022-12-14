@@ -1,4 +1,4 @@
-package com.baec23.hobbybank.ui.myaccount
+package com.baec23.hobbybank.ui.main.myaccount
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -39,7 +39,8 @@ fun MyAccountScreen(
     val currUser = viewModel.currUser
     val myHobbyClasses by viewModel.myHobbyClasses.collectAsState()
     Column(modifier = Modifier.fillMaxWidth()) {
-        UserDetailsSection(user = currUser)
+        if(currUser != null)
+            UserDetailsSection(user = currUser)
         MyClassesSection(
             myHobbyClasses = myHobbyClasses,
             onClassClicked = {},

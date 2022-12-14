@@ -1,6 +1,7 @@
 package com.baec23.hobbybank.ui.auth.signup
 
 import android.util.Log
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
@@ -8,17 +9,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.baec23.hobbybank.model.User
+import com.baec23.hobbybank.navigation.NavScreen
+import com.baec23.hobbybank.service.NavService
 import com.baec23.hobbybank.repository.UserRepository
+import com.baec23.hobbybank.service.SnackbarService
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SignupScreenViewModel @Inject constructor(
     private val userRepository: UserRepository,
+    private val snackbarService: SnackbarService,
+    private val navService: NavService,
 ) : ViewModel() {
 
     private val TAG = "SignupScreenViewModel: "
@@ -35,26 +38,31 @@ class SignupScreenViewModel @Inject constructor(
                     username = event.username
                 )
             }
+
             is SignupUiEvent.Password1Changed -> {
                 _formState.value = _formState.value.copy(
                     password1 = event.password1
                 )
             }
+
             is SignupUiEvent.Password2Changed -> {
                 _formState.value = _formState.value.copy(
                     password2 = event.password2
                 )
             }
+
             is SignupUiEvent.DisplayNameChanged -> {
                 _formState.value = _formState.value.copy(
                     displayName = event.displayName
                 )
             }
+
             is SignupUiEvent.PhoneNumberChanged -> {
                 _formState.value = _formState.value.copy(
                     phoneNumber = event.phoneNumber
                 )
             }
+
             SignupUiEvent.SubmitPressed -> {
                 Log.d(TAG, "onEvent: Submit Pressed")
                 viewModelScope.launch {
@@ -67,14 +75,21 @@ class SignupScreenViewModel @Inject constructor(
                         phoneNumber = form.phoneNumber,
                         location = ""
                     )
-                    userRepository.trySignup(user)
+                    userRepository.trySignup(user).getOrElse { exception ->
+                        exception.message?.let {
+                            snackbarService.showSnackbar(it, SnackbarDuration.Short)
+                            return@launch
+                        }
+                    }
+                    snackbarService.showSnackbar("Successfully Signed Up!")
+                    navService.navigate(NavScreen.Login)
                 }
             }
         }
         checkIfFormIsValid()
     }
 
-    private fun checkIfFormIsValid(){
+    private fun checkIfFormIsValid() {
         val form by formState
         var isValid = true
         if (form.username.isEmpty()) isValid = false
@@ -88,6 +103,15 @@ class SignupScreenViewModel @Inject constructor(
         _isFormValid.value = isValid
     }
 }
+
+data class SignupFormState(
+    val username: String = "",
+    val password1: String = "",
+    val password2: String = "",
+    val displayName: String = "",
+    val phoneNumber: String = "",
+)
+
 sealed class SignupUiEvent {
     data class UsernameChanged(val username: String) : SignupUiEvent()
     data class Password1Changed(val password1: String) : SignupUiEvent()

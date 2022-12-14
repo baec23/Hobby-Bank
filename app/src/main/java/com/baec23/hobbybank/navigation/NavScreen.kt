@@ -27,11 +27,17 @@ sealed class NavScreen(
 
     object CreateClass : NavScreen(
         route = "create_class_screen",
-        displayName = "Create Class"
+        displayName = "Create Class",
+        parentRoute = "my_account"
     )
 
     object MyAccount : NavScreen(
-        route = "my_account",
+        route = "my_account_screen",
         displayName = "My Account"
+    )
+
+    object MyClassSchedule : NavScreen(
+        route = "my_class_schedule_screen",
+        displayName = "일정표"
     )
 }

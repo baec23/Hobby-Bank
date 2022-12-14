@@ -1,6 +1,5 @@
 package com.baec23.hobbybank.ui.app
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -25,7 +24,6 @@ fun App(
     appViewModel: AppViewModel = hiltViewModel(),
 ) {
     val currScreen by appViewModel.currNavScreen
-    Log.d(TAG, "App: RECOMPOSED")
 
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = appViewModel.snackbarService.snackbarState) },
@@ -41,7 +39,7 @@ fun App(
             if (currScreen.shouldShowNavBars) {
                 BottomNavigationBar(
                     modifier = Modifier
-                        .height(50.dp),
+                        .height(60.dp),
                     items = bottomNavItems,
                     currScreen = currScreen
                 ) {
