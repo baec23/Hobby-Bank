@@ -7,8 +7,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.baec23.hobbybank.model.User
 import com.baec23.hobbybank.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -55,16 +59,16 @@ class SignupScreenViewModel @Inject constructor(
             SignupUiEvent.SubmitPressed -> {
                 Log.d(TAG, "onEvent: Submit Pressed")
                 viewModelScope.launch {
-                    userRepository.getId()
-
-                    userRepository.saveUser(
-                        SignupFormState(
-                            _formState.value.username,
-                            _formState.value.password1,
-                            _formState.value.displayName,
-                            _formState.value.phoneNumber
-                        )
+                    val form by _formState
+                    val user = User(
+                        id = "",
+                        username = form.username,
+                        password = form.password1,
+                        displayName = form.displayName,
+                        phoneNumber = form.phoneNumber,
+                        location = ""
                     )
+                    userRepository.trySignup(user)
                 }
             }
         }
@@ -72,7 +76,7 @@ class SignupScreenViewModel @Inject constructor(
 
     }
 
-    private fun checkIfFormIsValid(){
+    private fun checkIfFormIsValid() {
         val form by formState
         var isValid = true
         if (form.username.isEmpty()) isValid = false
@@ -85,4 +89,6 @@ class SignupScreenViewModel @Inject constructor(
         }
         _isFormValid.value = isValid
     }
+
+
 }

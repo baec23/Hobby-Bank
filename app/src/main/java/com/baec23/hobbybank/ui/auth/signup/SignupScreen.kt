@@ -71,6 +71,7 @@ fun SignupScreen(
             OutlinedTextField(
                 value = password1,
                 onValueChange = {
+
                     viewModel.onEvent(SignupUiEvent.Password1Changed(it))
                 },
                 modifier = Modifier
