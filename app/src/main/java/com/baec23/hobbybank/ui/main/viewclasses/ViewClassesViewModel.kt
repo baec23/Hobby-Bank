@@ -26,6 +26,12 @@ class ViewClassesViewModel @Inject constructor(
                 viewModelScope.launch {
                 }
             }
+
+            else -> {}
         }
     }
+}
+
+sealed class ViewClassesUiEvent {
+    data class ClassClicked(val hobbyClass: HobbyClass): ViewClassesUiEvent()
 }

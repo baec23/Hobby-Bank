@@ -23,14 +23,10 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignupScreen(
-    navController: NavHostController,
-    viewModel: SignupScreenViewModel = hiltViewModel()
-) {
+fun SignupScreen(viewModel: SignupScreenViewModel = hiltViewModel()) {
     val formState by viewModel.formState
     val username = formState.username
     val password1 = formState.password1
@@ -49,15 +45,13 @@ fun SignupScreen(
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            OutlinedCard(modifier = Modifier.fillMaxWidth(0.8f)) {
-                Text(
-                    modifier = Modifier
-                        .padding(10.dp)
-                        .align(Alignment.CenterHorizontally),
-                    text = "SIGN UP",
-                    fontSize = 30.sp
-                )
-            }
+            Text(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .align(Alignment.CenterHorizontally),
+                text = "SIGN UP",
+                fontSize = 30.sp
+            )
             Spacer(modifier = Modifier.height(10.dp))
             OutlinedTextField(
                 value = username,
@@ -73,6 +67,7 @@ fun SignupScreen(
             OutlinedTextField(
                 value = password1,
                 onValueChange = {
+
                     viewModel.onEvent(SignupUiEvent.Password1Changed(it))
                 },
                 modifier = Modifier

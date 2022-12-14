@@ -15,9 +15,11 @@ class HobbyClassRepository {
     private val TAG = "HobbyClassRepository: DEBUG: "
     private val collectionRef = Firebase.firestore.collection("hobbyClass")
 
-    fun getAllHobbyClasses(): Flow<List<HobbyClass?>> {
+    fun getAllHobbyClasses(): Flow<List<HobbyClass>> {
         return collectionRef.snapshotFlow().map { querySnapshot ->
-            querySnapshot.documents.map { it.toObject<HobbyClass>() }
+            querySnapshot.documents.mapNotNull {
+                it.toObject<HobbyClass>()
+            }
         }
     }
 
