@@ -34,6 +34,7 @@ class MyAccountViewModel @Inject constructor(
         when (event) {
             is MyAccountUiEvent.ClassSelected -> TODO()
             MyAccountUiEvent.CreateNewClassPressed -> navService.navigate(NavScreen.CreateClass)
+            MyAccountUiEvent.EditMyProfilePressed -> navService.navigate(NavScreen.EditMyProfile)
         }
     }
 }
@@ -41,4 +42,5 @@ class MyAccountViewModel @Inject constructor(
 sealed class MyAccountUiEvent {
     data class ClassSelected(val selectedClass: HobbyClass) : MyAccountUiEvent()
     object CreateNewClassPressed : MyAccountUiEvent()
+    object EditMyProfilePressed: MyAccountUiEvent()
 }

@@ -1,14 +1,14 @@
 package com.baec23.hobbybank.ui.auth.login
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.baec23.hobbybank.navigation.CONTENT_NAV_GRAPH_ROUTE
+import com.baec23.hobbybank.navigation.MAIN_NAV_GRAPH_ROUTE
 import com.baec23.hobbybank.navigation.NavScreen
+import com.baec23.hobbybank.repository.DataStoreRepository
 import com.baec23.hobbybank.service.NavService
 import com.baec23.hobbybank.repository.UserRepository
 import com.baec23.hobbybank.service.SnackbarService
@@ -19,6 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val userRepository: UserRepository,
+    private val dataStoreRepository: DataStoreRepository,
     private val navService: NavService,
     private val snackbarService: SnackbarService
 ) : ViewModel() {
@@ -73,9 +74,9 @@ class LoginViewModel @Inject constructor(
                             )
                             return@launch
                         }
-                        Log.d(TAG, "myUser: ${myUser.username} | ${myUser.id}")
+                        dataStoreRepository.putString("savedUserId", myUser.id)
                         snackbarService.showSnackbar("Login Successful")
-                        navService.navigate(CONTENT_NAV_GRAPH_ROUTE, clearBackStack = true)
+                        navService.navigate(MAIN_NAV_GRAPH_ROUTE, clearBackStack = true)
                     }
                 }
             }
@@ -83,7 +84,6 @@ class LoginViewModel @Inject constructor(
             LoginUiEvent.SignUpPressed -> navService.navigate(NavScreen.Signup)
         }
     }
-
 }
 
 data class LoginFormState(

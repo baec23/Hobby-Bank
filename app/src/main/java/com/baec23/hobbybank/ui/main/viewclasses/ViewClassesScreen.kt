@@ -23,7 +23,7 @@ fun ViewClassesScreen(
         items(count = allHobbyClasses.size) { index ->
             HobbyClassItem(modifier = Modifier.height(100.dp).fillMaxWidth(),
             hobbyClass = allHobbyClasses[index]!!,
-            onClick = {})
+            onClick = {viewModel.onEvent(ViewClassesUiEvent.ClassClicked(HobbyClass()))})
         }
     }
 }

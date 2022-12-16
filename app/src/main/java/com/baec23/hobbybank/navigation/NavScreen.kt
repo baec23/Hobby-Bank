@@ -40,4 +40,16 @@ sealed class NavScreen(
         route = "my_class_schedule_screen",
         displayName = "일정표"
     )
+
+    object ViewClassDetails : NavScreen(
+        route = "view_class_details_screen",
+        displayName = "수업 상세",
+        parentRoute = "home_screen"
+    )
+
+    object EditMyProfile : NavScreen(
+        route = "edit_my_profile_screen",
+        displayName = "나의 프로필",
+        parentRoute = "my_account_screen"
+    )
 }

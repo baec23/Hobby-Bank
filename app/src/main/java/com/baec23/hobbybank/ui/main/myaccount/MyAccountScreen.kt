@@ -14,8 +14,10 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.List
+import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -39,8 +41,11 @@ fun MyAccountScreen(
     val currUser = viewModel.currUser
     val myHobbyClasses by viewModel.myHobbyClasses.collectAsState()
     Column(modifier = Modifier.fillMaxWidth()) {
-        if(currUser != null)
-            UserDetailsSection(user = currUser)
+        if (currUser != null)
+            UserDetailsSection(user = currUser,
+            onEditProfileClicked = {
+                viewModel.onEvent(MyAccountUiEvent.EditMyProfilePressed)
+            })
         MyClassesSection(
             myHobbyClasses = myHobbyClasses,
             onClassClicked = {},
@@ -49,17 +54,21 @@ fun MyAccountScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserDetailsSection(
     user: User,
+    onEditProfileClicked: () -> Unit
 ) {
     PreferencesSection(
         modifier = Modifier.fillMaxWidth(),
         headerTitle = "My Details",
         headerIcon = Icons.Rounded.AccountCircle
     ) {
-        Text("username : ${user.username}")
-        Text("displayName : ${user.displayName}")
+        Card (onClick = onEditProfileClicked){
+            Text("username : ${user.username}")
+            Text("displayName : ${user.displayName}")
+        }
     }
 }
 
@@ -70,7 +79,7 @@ fun MyClassesSection(
     onCreateNewClassClicked: () -> Unit,
 ) {
     val a = Result.success("a")
-    a.getOrElse {  }
+    a.getOrElse { }
 
     PreferencesSection(
         modifier = Modifier.fillMaxWidth(),

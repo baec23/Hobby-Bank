@@ -10,38 +10,38 @@ import com.baec23.hobbybank.ui.app.TAG
 import dagger.hilt.android.scopes.ActivityScoped
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import javax.inject.Singleton
+import kotlin.reflect.KProperty
+import kotlin.reflect.full.memberProperties
 
-@ActivityScoped
+@Singleton
 class NavService constructor(
     private val navController: NavHostController
 ) {
-    private val _currNavScreen: MutableState<NavScreen> = mutableStateOf(NavScreen.Home)
+    private val routeNavScreenMap: MutableMap<String, NavScreen> = mutableMapOf()
+    private val _currNavScreen: MutableState<NavScreen> = mutableStateOf(NavScreen.Login)
     val currNavScreen: State<NavScreen> = _currNavScreen
 
     fun navigate(to: NavScreen, clearBackStack: Boolean = false) {
-        if (clearBackStack)
-            navController.popBackStack(currNavScreen.value.route, true)
+        if (clearBackStack) navController.popBackStack(currNavScreen.value.route, true)
         navController.navigate(to.route)
     }
 
     fun navigate(to: String, clearBackStack: Boolean = false) {
-        if (clearBackStack)
-            navController.popBackStack(currNavScreen.value.route, true)
+        if (clearBackStack) navController.popBackStack(currNavScreen.value.route, true)
         navController.navigate(to)
     }
 
     init {
+        NavScreen::class.sealedSubclasses.forEach { screenKClass ->
+            val navScreen = screenKClass.objectInstance ?: return@forEach
+            val route = navScreen::route.get()
+            routeNavScreenMap[route] = navScreen
+        }
+
         MainScope().launch {
             navController.currentBackStackEntryFlow.collect {
-                Log.d(TAG, "currentBackstackEntryFlow: changed")
-                when (it.destination.route) {
-                    "login_screen" -> _currNavScreen.value = NavScreen.Login
-                    "signup_screen" -> _currNavScreen.value = NavScreen.Signup
-                    "home_screen" -> _currNavScreen.value = NavScreen.Home
-                    "create_class_screen" -> _currNavScreen.value = NavScreen.CreateClass
-                    "my_account_screen" -> _currNavScreen.value = NavScreen.MyAccount
-                    "my_class_schedule_screen" -> _currNavScreen.value = NavScreen.MyClassSchedule
-                }
+                _currNavScreen.value = routeNavScreenMap[it.destination.route] ?: return@collect
             }
         }
     }

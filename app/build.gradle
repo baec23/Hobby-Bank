@@ -101,4 +101,7 @@ dependencies {
 
     //DataStore
     implementation "androidx.datastore:datastore-preferences:1.0.0"
+
+    //Reflection
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.21")
 }

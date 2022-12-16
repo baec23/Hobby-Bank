@@ -8,4 +8,5 @@ fun MyClassScheduleScreen(
     viewModel: MyClassScheduleViewModel = hiltViewModel()
 ) {
 
+
 }

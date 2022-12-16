@@ -31,6 +31,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -47,6 +49,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
+import kotlinx.coroutines.selects.select
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -79,6 +82,23 @@ fun CreateClassScreen(
         }
     }
 
+    //region TAB TEST
+    val tabTitles = listOf(
+        "단계 1",
+        "단계 2",
+        "단계 3"
+    )
+    var selectedTabIndex by remember { mutableStateOf(0) }
+    TabRow(selectedTabIndex = selectedTabIndex) {
+        tabTitles.forEachIndexed { index, title ->
+            Tab(selected = selectedTabIndex == index,
+                onClick = { selectedTabIndex = index }) {
+                Text(title)
+            }
+        }
+    }
+
+    //endregion
     Column(
         modifier = Modifier
             .fillMaxSize()

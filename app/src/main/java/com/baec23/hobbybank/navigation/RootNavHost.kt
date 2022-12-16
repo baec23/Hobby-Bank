@@ -7,7 +7,7 @@ import com.baec23.hobbybank.navigation.navgraph.authNavGraph
 import com.baec23.hobbybank.navigation.navgraph.contentNavGraph
 
 const val AUTH_NAV_GRAPH_ROUTE = "auth"
-const val CONTENT_NAV_GRAPH_ROUTE = "content"
+const val MAIN_NAV_GRAPH_ROUTE = "main"
 const val ROOT_NAV_GRAPH_ROUTE = "root"
 
 @Composable
