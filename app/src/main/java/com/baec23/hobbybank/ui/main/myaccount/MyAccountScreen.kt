@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.baec23.hobbybank.model.HobbyClass
 import com.baec23.hobbybank.model.User
+import com.baec23.hobbybank.ui.comp.PreferencesSection
 
 @Composable
 fun MyAccountScreen(
@@ -62,7 +63,7 @@ fun UserDetailsSection(
 ) {
     PreferencesSection(
         modifier = Modifier.fillMaxWidth(),
-        headerTitle = "My Details",
+        headerTitle = "내 회원 정보",
         headerIcon = Icons.Rounded.AccountCircle
     ) {
         Card (onClick = onEditProfileClicked){
@@ -83,12 +84,12 @@ fun MyClassesSection(
 
     PreferencesSection(
         modifier = Modifier.fillMaxWidth(),
-        headerTitle = "My Classes",
+        headerTitle = "내가 만든 수업",
         headerIcon = Icons.Rounded.List
     ) {
         TextButton(onClick = onCreateNewClassClicked) {
             Icon(imageVector = Icons.Default.Add, contentDescription = null)
-            Text("Create New Class")
+            Text("나만의 수업 제작 하기")
         }
         LazyColumn(
             modifier = Modifier.fillMaxWidth(),
@@ -112,50 +113,5 @@ fun HobbyClassCard(
     ElevatedCard(modifier = modifier.padding(8.dp)) {
         Text(text = hobbyClass.name)
         Text(text = hobbyClass.details)
-    }
-}
-
-@Composable
-fun PreferencesSection(
-    modifier: Modifier = Modifier,
-    headerTitle: String,
-    headerIcon: ImageVector? = null,
-    content: @Composable () -> Unit
-) {
-    Column(
-        modifier = modifier
-            .padding(8.dp)
-    ) {
-        Row(verticalAlignment = Alignment.Bottom) {
-            if (headerIcon != null) {
-                Icon(
-                    imageVector = headerIcon,
-                    contentDescription = headerTitle,
-                    tint = MaterialTheme.colorScheme.primary
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-            }
-            Text(headerTitle)
-        }
-        Spacer(modifier = Modifier.height(4.dp))
-        Divider()
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-        ) {
-            content()
-        }
-    }
-}
-
-@Preview
-@Composable
-fun PreferencesSectionPreview() {
-    PreferencesSection(
-        headerTitle = "My Section Title",
-        headerIcon = Icons.Rounded.Favorite
-    ) {
-        Text("Content")
     }
 }

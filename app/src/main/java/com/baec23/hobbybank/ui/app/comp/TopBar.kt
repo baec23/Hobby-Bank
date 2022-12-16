@@ -77,7 +77,8 @@ fun DropdownMenuContent(
             Icon(imageVector = Icons.Default.ExitToApp, contentDescription = "Logout")
         },
         text = {
-            Text("Logout")
+            Text(text = "로그아웃",
+            style = MaterialTheme.typography.titleSmall)
         }, onClick = onLogout
     )
 }
