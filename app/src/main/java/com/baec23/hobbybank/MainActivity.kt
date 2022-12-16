@@ -3,8 +3,6 @@ package com.baec23.hobbybank
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.navigation.compose.rememberNavController
-import com.baec23.hobbybank.navigation.RootNavHost
 import com.baec23.hobbybank.ui.app.App
 import com.baec23.hobbybank.ui.theme.HobbyBankTheme
 import dagger.hilt.android.AndroidEntryPoint

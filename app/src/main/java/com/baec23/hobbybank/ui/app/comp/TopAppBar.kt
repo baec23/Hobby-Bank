@@ -26,7 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun TopBar(
+fun TopAppBar(
     modifier: Modifier = Modifier,
     screenName: String,
     onLogout: () -> Unit = {}

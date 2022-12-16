@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.baec23.hobbybank.ui.comp.DisplaySection
 import com.baec23.hobbybank.ui.main.createclass.comp.AddImageButton
+import com.baec23.hobbybank.ui.main.createclass.comp.CardImageInputSection
 import com.baec23.hobbybank.ui.main.createclass.comp.JobImagesList
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -94,23 +95,10 @@ fun CreateClassTab1(
             .padding(16.dp)
     ) {
         DisplaySection(headerText = "수업 사진 추가") {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Start,
-            ) {
-                AddImageButton(
-                    modifier = Modifier
-                        .width(100.dp)
-                        .aspectRatio(1f)
-                ) {
-                    launcher.launch("image/*")
-                }
-                JobImagesList(
-                    bitmaps = addedBitmaps,
-                    onRemove = { viewModel.onEvent(CreateClass1UiEvent.ImageRemoved(it)) }
-                )
-            }
+            CardImageInputSection(addedBitmaps = addedBitmaps,
+                onBitmapAdded = { viewModel.onEvent(CreateClass1UiEvent.ImageAdded(it)) },
+                onBitmapRemoved = {viewModel.onEvent(CreateClass1UiEvent.ImageRemoved(it))}
+            )
         }
 
         Spacer(modifier = Modifier.height(8.dp))

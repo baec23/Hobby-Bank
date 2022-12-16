@@ -14,7 +14,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.baec23.hobbybank.navigation.RootNavHost
 import com.baec23.hobbybank.navigation.navgraph.bottomNavItems
 import com.baec23.hobbybank.ui.app.comp.BottomNavigationBar
-import com.baec23.hobbybank.ui.app.comp.TopBar
+import com.baec23.hobbybank.ui.app.comp.TopAppBar
 
 const val TAG: String = "App"
 
@@ -22,14 +22,16 @@ const val TAG: String = "App"
 @Composable
 fun App(
     appViewModel: AppViewModel = hiltViewModel(),
-) {
+    topAppBar: (@Composable () -> Unit)? = null,
+    bottomNavBar: (@Composable () -> Unit)? = null
+    ) {
     val currScreen by appViewModel.currNavScreen
 
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = appViewModel.snackbarService.snackbarState) },
         topBar = {
-            if (currScreen.shouldShowNavBars) {
-                TopBar(
+            if (topAppBar != null && currScreen.shouldShowNavBars) {
+                TopAppBar(
                     modifier = Modifier.height(60.dp),
                     screenName = currScreen.displayName,
                     onLogout = { appViewModel.onEvent(AppUiEvent.LogoutPressed) })

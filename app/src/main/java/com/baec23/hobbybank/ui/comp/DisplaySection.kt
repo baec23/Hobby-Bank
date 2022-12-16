@@ -51,7 +51,7 @@ fun DisplaySection(
                 textAlign = TextAlign.Start,
             )
         }
-        headerSubtext?.let{
+        headerSubtext?.let {
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = headerSubtext,
@@ -82,6 +82,9 @@ fun DisplaySectionPreview() {
             headerSubtext = "Hello subtext this is a description"
         ) {
             Box(
+                modifier = Modifier
+                    .size(500.dp)
+                    .background(color = Color.Gray),
                 contentAlignment = Alignment.Center,
             ) {
                 Text("Placeholder")
