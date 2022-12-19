@@ -19,6 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.baec23.hobbybank.ui.main.createclass.tab.CreateClassTab1
+import com.baec23.hobbybank.ui.main.createclass.tab.CreateClassTab2
 import com.baec23.hobbybank.ui.main.createclass.tab.CreateClassTab3
 
 @OptIn(ExperimentalMaterial3Api::class)

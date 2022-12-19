@@ -51,7 +51,7 @@ fun DisplaySection(
                 textAlign = TextAlign.Start,
             )
         }
-        headerSubtext?.let{
+        headerSubtext?.let {
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = headerSubtext,
@@ -61,8 +61,12 @@ fun DisplaySection(
         }
         Spacer(modifier = Modifier.height(2.dp))
         Divider(color = dividerColor, thickness = 2.dp)
-        Box(modifier = contentModifier)
-        {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp, horizontal = 4.dp)
+                .align(Alignment.CenterHorizontally)
+        ) {
             content()
         }
     }

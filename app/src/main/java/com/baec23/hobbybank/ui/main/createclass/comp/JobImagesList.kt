@@ -49,7 +49,6 @@ fun JobImagesList(
     })
 }
 
-
 @Composable
 fun AddImageButton(
     modifier: Modifier = Modifier,
