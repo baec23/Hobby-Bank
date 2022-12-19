@@ -32,7 +32,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.baec23.hobbybank.model.HobbyClassSession
-import com.baec23.hobbybank.ui.comp.DisplaySection
+import com.baec23.hobbybank.ui.comp.button.HBButton
+import com.baec23.hobbybank.ui.comp.section.DisplaySection
 import com.baec23.hobbybank.ui.comp.inputfield.TextInputField
 import com.baec23.hobbybank.ui.main.createclass.CreateClass3UiEvent
 import com.baec23.hobbybank.ui.main.createclass.CreateClassViewModel
@@ -93,8 +94,6 @@ fun CreateClassTab3(
                 }
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
-
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically
@@ -115,7 +114,7 @@ fun CreateClassTab3(
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(12.dp))
+
             TextButton(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 onClick = { viewModel.onEvent(CreateClass3UiEvent.AddSessionPressed) },
@@ -134,13 +133,16 @@ fun CreateClassTab3(
                 .align(Alignment.CenterHorizontally),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Button(
+            HBButton(
+                modifier = Modifier.weight(1f),
+                onClick = { viewModel.onEvent(CreateClass3UiEvent.PrevPressed) },
+                text = "이전"
+            )
+            HBButton(
                 modifier = Modifier.weight(1f),
                 onClick = { viewModel.onEvent(CreateClass3UiEvent.FinishPressed) },
-                shape = RoundedCornerShape(5.dp)
-            ) {
-                Text("완료")
-            }
+                text = "완료"
+            )
         }
     }
 

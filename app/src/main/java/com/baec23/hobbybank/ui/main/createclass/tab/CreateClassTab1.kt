@@ -2,46 +2,32 @@
 
 package com.baec23.hobbybank.ui.main.createclass.tab
 
-import android.graphics.Bitmap
-import android.graphics.ImageDecoder
-import android.net.Uri
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.baec23.hobbybank.ui.comp.DisplaySection
+import com.baec23.hobbybank.ui.comp.section.DisplaySection
+import com.baec23.hobbybank.ui.comp.ImageAdder
+import com.baec23.hobbybank.ui.comp.button.HBButton
+import com.baec23.hobbybank.ui.comp.inputfield.TextInputField
 import com.baec23.hobbybank.ui.main.createclass.CreateClass1UiEvent
-import com.baec23.hobbybank.ui.main.createclass.CreateClass2UiEvent
 import com.baec23.hobbybank.ui.main.createclass.CreateClassViewModel
 import com.baec23.hobbybank.ui.main.createclass.InputFormState
-import com.baec23.hobbybank.ui.main.createclass.comp.AddImageButton
-import com.baec23.hobbybank.ui.main.createclass.comp.JobImagesList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -52,28 +38,7 @@ fun CreateClassTab1(
     var className: String = ""
     var errorMessage: String? = null
 
-    val context = LocalContext.current
-    var imageUri by remember { mutableStateOf<Uri?>(null) }
-    val bitmap = remember { mutableStateOf<Bitmap?>(null) }
     val addedBitmaps by viewModel.addedImages
-
-    val launcher = rememberLauncherForActivityResult(
-        contract =
-        ActivityResultContracts.GetContent()
-    ) { uri: Uri? ->
-        imageUri = uri
-    }
-
-    LaunchedEffect(imageUri) {
-        imageUri?.let {
-            val source = ImageDecoder
-                .createSource(context.contentResolver, it)
-            bitmap.value = ImageDecoder.decodeBitmap(source)
-            bitmap.value?.let { bitmap ->
-                viewModel.onEvent(CreateClass1UiEvent.ImageAdded(bitmap))
-            }
-        }
-    }
 
     when (classNameFormState) {
         InputFormState.Empty -> {
@@ -100,23 +65,11 @@ fun CreateClassTab1(
             .verticalScroll(rememberScrollState())
     ) {
         DisplaySection(headerText = "수업 사진 추가") {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Start,
-            ) {
-                AddImageButton(
-                    modifier = Modifier
-                        .width(100.dp)
-                        .aspectRatio(1f)
-                ) {
-                    launcher.launch("image/*")
-                }
-                JobImagesList(
-                    bitmaps = addedBitmaps,
-                    onRemove = { viewModel.onEvent(CreateClass1UiEvent.ImageRemoved(it)) }
-                )
-            }
+            ImageAdder(
+                addedImages = addedBitmaps,
+                onImageAdded = { viewModel.onEvent(CreateClass1UiEvent.ImageAdded(it)) },
+                onImageRemoved = { viewModel.onEvent(CreateClass1UiEvent.ImageRemoved(it)) }
+            )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -127,27 +80,11 @@ fun CreateClassTab1(
             headerText = "수업 상세",
             headerSubtext = "상세 내용을 입력 해 주세요"
         ) {
-            OutlinedTextField(
-                modifier = Modifier.fillMaxWidth(),
-                textStyle = MaterialTheme.typography.bodyLarge,
+            TextInputField(
                 value = className,
-                onValueChange = { viewModel.onEvent(CreateClass1UiEvent.NameChanged(it)) },
-                isError = errorMessage != null,
-                singleLine = true,
-                label = {
-                    Text(
-                        text = "수업 제목",
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
-                },
-                placeholder = {
-                    Text(
-                        text = "수업 제목을 적어 주세요",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                },
+                onValueChanged = { viewModel.onEvent(CreateClass1UiEvent.NameChanged(it)) },
+                label = "수업 제목",
+                placeholder = "수업 제목을 적어 주세요"
             )
         }
 
@@ -159,13 +96,11 @@ fun CreateClassTab1(
                 .align(Alignment.CenterHorizontally),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Button(
+            HBButton(
                 modifier = Modifier.weight(1f),
                 onClick = { viewModel.onEvent(CreateClass1UiEvent.NextPressed) },
-                shape = RoundedCornerShape(5.dp)
-            ) {
-                Text("다음")
-            }
+                text = "다음"
+            )
         }
     }
 }

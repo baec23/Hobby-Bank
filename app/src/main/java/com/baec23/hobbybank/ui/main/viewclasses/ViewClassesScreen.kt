@@ -1,5 +1,6 @@
 package com.baec23.hobbybank.ui.main.viewclasses
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,17 +14,31 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.baec23.hobbybank.model.HobbyClass
+import com.baec23.hobbybank.ui.comp.inputfield.TextInputField
 
 @Composable
 fun ViewClassesScreen(
     viewModel: ViewClassesViewModel = hiltViewModel()
 ) {
-    val allHobbyClasses by viewModel.allHobbyClasses.collectAsState()
-    LazyColumn {
-        items(count = allHobbyClasses.size) { index ->
-            HobbyClassItem(modifier = Modifier.height(100.dp).fillMaxWidth(),
-            hobbyClass = allHobbyClasses[index]!!,
-            onClick = {viewModel.onEvent(ViewClassesUiEvent.ClassClicked(HobbyClass()))})
+    val allHobbyClasses by viewModel.filteredHobbyClasses.collectAsState()
+    val searchFieldText by viewModel.searchFieldText
+
+    Column(modifier = Modifier.fillMaxWidth()) {
+        TextInputField(
+            value = searchFieldText,
+            onValueChanged = {
+                viewModel.onEvent(ViewClassesUiEvent.SearchTextChanged(it))
+            },
+            label = "Search"
+        )
+        LazyColumn {
+            items(count = allHobbyClasses.size) { index ->
+                HobbyClassItem(modifier = Modifier
+                    .height(100.dp)
+                    .fillMaxWidth(),
+                    hobbyClass = allHobbyClasses[index],
+                    onClick = { viewModel.onEvent(ViewClassesUiEvent.ClassClicked(HobbyClass())) })
+            }
         }
     }
 }

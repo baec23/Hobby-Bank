@@ -1,6 +1,7 @@
-package com.baec23.hobbybank.ui.comp
+package com.baec23.hobbybank.ui.comp.section
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,16 +23,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun DisplaySection(
     modifier: Modifier = Modifier,
-    contentModifier: Modifier = Modifier.padding(4.dp),
     headerText: String,
     headerSubtext: String? = null,
     headerIcon: ImageVector? = null,
     dividerColor: Color = MaterialTheme.colorScheme.primary,
+    contentSpacing: Dp = 12.dp,
     content: @Composable () -> Unit
 ) {
     Column(modifier = modifier) {
@@ -65,7 +67,8 @@ fun DisplaySection(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp, horizontal = 4.dp)
-                .align(Alignment.CenterHorizontally)
+                .align(Alignment.CenterHorizontally),
+            verticalArrangement = Arrangement.spacedBy(contentSpacing)
         ) {
             content()
         }

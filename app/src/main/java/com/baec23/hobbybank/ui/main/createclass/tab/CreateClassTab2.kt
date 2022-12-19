@@ -18,7 +18,8 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.baec23.hobbybank.ui.comp.DisplaySection
+import com.baec23.hobbybank.ui.comp.button.HBButton
+import com.baec23.hobbybank.ui.comp.section.DisplaySection
 import com.baec23.hobbybank.ui.comp.inputfield.NumberInputField
 import com.baec23.hobbybank.ui.comp.inputfield.TextInputField
 import com.baec23.hobbybank.ui.main.createclass.CreateClass2UiEvent
@@ -65,7 +66,6 @@ fun CreateClassTab2(
                         viewModel.onEvent(CreateClass2UiEvent.MaxStudentsChanged(it))
                     })
             }
-            Spacer(modifier = Modifier.height(12.dp))
 
             TextInputField(
                 value = location,
@@ -73,8 +73,6 @@ fun CreateClassTab2(
                 label = "수업 장소",
                 placeholder = "수업 장소를 적어 주세요"
             )
-
-            Spacer(modifier = Modifier.height(12.dp))
 
             NumberInputField(
                 value = duration,
@@ -97,27 +95,25 @@ fun CreateClassTab2(
                 maxLines = 10
             )
         }
+
         Spacer(modifier = Modifier.height(16.dp))
+
         Row(
             modifier = Modifier
                 .fillMaxWidth(0.8f)
                 .align(CenterHorizontally),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Button(
+            HBButton(
                 modifier = Modifier.weight(1f),
                 onClick = { viewModel.onEvent(CreateClass2UiEvent.PrevPressed) },
-                shape = RoundedCornerShape(5.dp)
-            ) {
-                Text("이전")
-            }
-            Button(
+                text = "이전"
+            )
+            HBButton(
                 modifier = Modifier.weight(1f),
                 onClick = { viewModel.onEvent(CreateClass2UiEvent.NextPressed) },
-                shape = RoundedCornerShape(5.dp)
-            ) {
-                Text("다음")
-            }
+                text = "다음"
+            )
         }
     }
 }

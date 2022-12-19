@@ -1,8 +1,15 @@
-package com.baec23.hobbybank.ui.main.createclass.comp
+package com.baec23.hobbybank.ui.comp
 
 import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -17,8 +24,10 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,20 +36,76 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 
+@Composable
+fun ImageAdder(
+    modifier: Modifier = Modifier,
+    cardWidth: Dp = 100.dp,
+    addedImages: List<Bitmap>,
+    onImageAdded: (Bitmap) -> Unit,
+    onImageRemoved: (Bitmap) -> Unit,
+    addButtonIconColor: Color = MaterialTheme.colorScheme.primary,
+    addButtonBackgroundColor: Color = MaterialTheme.colorScheme.tertiary
+) {
+    val context = LocalContext.current
+    var imageUri by remember { mutableStateOf<Uri?>(null) }
+    val bitmap = remember { mutableStateOf<Bitmap?>(null) }
+    val launcher = rememberLauncherForActivityResult(
+        contract =
+        ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        imageUri = uri
+    }
+
+    LaunchedEffect(imageUri) {
+        imageUri?.let {
+            val source = ImageDecoder
+                .createSource(context.contentResolver, it)
+            bitmap.value = ImageDecoder.decodeBitmap(source)
+            bitmap.value?.let { bitmap ->
+                onImageAdded(bitmap)
+            }
+        }
+    }
+
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Start,
+    ) {
+        AddImageButton(
+            modifier = Modifier
+                .width(cardWidth)
+                .aspectRatio(1f),
+            iconColor = addButtonIconColor,
+            backgroundColor = addButtonBackgroundColor
+        ) {
+            launcher.launch("image/*")
+        }
+        ImageCardRow(
+            bitmaps = addedImages,
+            cardWidth = cardWidth,
+            onRemove = { onImageRemoved(it) }
+        )
+    }
+}
+
 
 @Composable
-fun JobImagesList(
+fun ImageCardRow(
     bitmaps: List<Bitmap>,
-    onRemove: (Bitmap) -> Unit = {}
+    cardWidth: Dp,
+    onRemove: (Bitmap) -> Unit = {},
 ) {
     LazyRow(content = {
         items(count = bitmaps.size) {
             AddedImage(
                 modifier = Modifier
-                    .width(100.dp)
+                    .width(cardWidth)
                     .aspectRatio(1f),
                 bitmap = bitmaps[it],
                 onRemove = onRemove
@@ -52,16 +117,20 @@ fun JobImagesList(
 @Composable
 fun AddImageButton(
     modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    iconColor: Color,
+    backgroundColor: Color,
+    onClick: () -> Unit,
 ) {
     ImageCard(
         modifier = modifier,
         onClick = onClick,
+        backgroundColor = backgroundColor
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(25.dp),
+                .padding(25.dp)
+                .background(backgroundColor),
             contentAlignment = Alignment.Center
         )
         {
@@ -69,7 +138,7 @@ fun AddImageButton(
                 modifier = Modifier.fillMaxSize(),
                 imageVector = Icons.Default.AddCircle,
                 contentDescription = "Add Image",
-                tint = Color.DarkGray
+                tint = iconColor
             )
         }
     }
@@ -113,7 +182,7 @@ fun ImageCard(
     modifier: Modifier = Modifier,
     backgroundColor: Color = Color.LightGray,
     onClick: () -> Unit = {},
-    Content: @Composable () -> Unit,
+    content: @Composable () -> Unit,
 ) {
     Card(
         modifier = modifier
@@ -122,6 +191,6 @@ fun ImageCard(
         colors = CardDefaults.cardColors(containerColor = backgroundColor),
         onClick = onClick
     ) {
-        Content()
+        content()
     }
 }
