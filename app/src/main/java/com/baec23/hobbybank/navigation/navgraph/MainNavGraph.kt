@@ -12,6 +12,7 @@ import com.baec23.hobbybank.navigation.MAIN_NAV_GRAPH_ROUTE
 import com.baec23.hobbybank.navigation.NavScreen
 import com.baec23.hobbybank.ui.main.createclass.CreateClassScreen
 import com.baec23.hobbybank.ui.main.editmyprofile.EditMyProfileScreen
+import com.baec23.hobbybank.ui.main.home.HomeScreen
 import com.baec23.hobbybank.ui.main.myaccount.MyAccountScreen
 import com.baec23.hobbybank.ui.main.myclassschedule.MyClassScheduleScreen
 import com.baec23.hobbybank.ui.main.viewclassdetails.ViewClassDetailsScreen
@@ -23,7 +24,7 @@ fun NavGraphBuilder.contentNavGraph() {
         route = MAIN_NAV_GRAPH_ROUTE
     ) {
         composable(route = NavScreen.Home.route) {
-            ViewClassesScreen()
+            HomeScreen()
         }
         composable(route = NavScreen.CreateClass.route) {
             CreateClassScreen()
