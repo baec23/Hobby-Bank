@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalComposeUiApi::class)
+
 package com.baec23.hobbybank.ui.main.createclass.tab
 
 import androidx.compose.foundation.layout.Arrangement
@@ -8,20 +10,22 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusProperties
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.baec23.hobbybank.ui.comp.button.HBButton
-import com.baec23.hobbybank.ui.comp.section.DisplaySection
 import com.baec23.hobbybank.ui.comp.inputfield.NumberInputField
 import com.baec23.hobbybank.ui.comp.inputfield.TextInputField
+import com.baec23.hobbybank.ui.comp.section.DisplaySection
 import com.baec23.hobbybank.ui.main.createclass.CreateClass2UiEvent
 import com.baec23.hobbybank.ui.main.createclass.CreateClassViewModel
 
@@ -35,6 +39,8 @@ fun CreateClassTab2(
     val location = formState.location
     val duration = formState.durationMinutes
     val details = formState.details
+
+    val (minStudentsRef, maxStudentsRef, locationRef, durationRef, detailsRef) = remember { FocusRequester.createRefs() }
 
     Column(
         modifier = Modifier
@@ -50,7 +56,10 @@ fun CreateClassTab2(
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 NumberInputField(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f)
+                        .focusRequester(minStudentsRef)
+                        .focusProperties { next = maxStudentsRef },
                     value = minStudents,
                     label = "최소 인원수",
                     placeHolder = "최소 인원을 적어 주세요",
@@ -58,7 +67,13 @@ fun CreateClassTab2(
                         viewModel.onEvent(CreateClass2UiEvent.MinStudentsChanged(it))
                     })
                 NumberInputField(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f)
+                        .focusRequester(maxStudentsRef)
+                        .focusProperties {
+                            next = locationRef
+                            previous = minStudentsRef
+                        },
                     value = maxStudents,
                     label = "최대 인원수",
                     placeHolder = "최대 인원을 적어 주세요",
@@ -68,6 +83,12 @@ fun CreateClassTab2(
             }
 
             TextInputField(
+                modifier = Modifier
+                    .focusRequester(locationRef)
+                    .focusProperties {
+                        next = durationRef
+                        previous = maxStudentsRef
+                    },
                 value = location,
                 onValueChanged = { viewModel.onEvent(CreateClass2UiEvent.LocationChanged(it)) },
                 label = "수업 장소",
@@ -75,6 +96,12 @@ fun CreateClassTab2(
             )
 
             NumberInputField(
+                modifier = Modifier
+                    .focusRequester(durationRef)
+                    .focusProperties {
+                        next = detailsRef
+                        previous = locationRef
+                    },
                 value = duration,
                 label = "예상 소요 시간",
                 onValueChange = { viewModel.onEvent(CreateClass2UiEvent.DurationChanged(it)) },
@@ -86,6 +113,9 @@ fun CreateClassTab2(
 
         DisplaySection(headerText = "상세 내용") {
             TextInputField(
+                modifier = Modifier
+                    .focusRequester(detailsRef)
+                    .focusProperties { previous = durationRef },
                 value = details,
                 onValueChanged = { viewModel.onEvent(CreateClass2UiEvent.DetailsChanged(it)) },
                 label = "수업 설명",
