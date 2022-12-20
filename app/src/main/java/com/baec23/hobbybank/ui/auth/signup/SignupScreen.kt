@@ -67,7 +67,6 @@ fun SignupScreen(viewModel: SignupScreenViewModel = hiltViewModel()) {
             OutlinedTextField(
                 value = password1,
                 onValueChange = {
-
                     viewModel.onEvent(SignupUiEvent.Password1Changed(it))
                 },
                 modifier = Modifier
