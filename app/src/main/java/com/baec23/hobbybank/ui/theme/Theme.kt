@@ -31,6 +31,7 @@ private val LightColorScheme = lightColorScheme(
     primary = Yellow,
     secondary = Brown,
     tertiary = Beige,
+    primaryContainer = Ivory,
 //    background = Ivory
 
     /* Other default colors to override

@@ -32,9 +32,10 @@ class MyAccountViewModel @Inject constructor(
 
     fun onEvent(event: MyAccountUiEvent) {
         when (event) {
-            is MyAccountUiEvent.ClassSelected -> TODO()
+            is MyAccountUiEvent.ClassSelected -> {}
             MyAccountUiEvent.CreateNewClassPressed -> navService.navigate(NavScreen.CreateClass)
-            MyAccountUiEvent.EditMyProfilePressed -> navService.navigate(NavScreen.EditMyProfile)
+            MyAccountUiEvent.EditDetailsPressed -> navService.navigate(NavScreen.EditMyProfile)
+            MyAccountUiEvent.ProfileImagePressed -> {}
         }
     }
 }
@@ -42,5 +43,6 @@ class MyAccountViewModel @Inject constructor(
 sealed class MyAccountUiEvent {
     data class ClassSelected(val selectedClass: HobbyClass) : MyAccountUiEvent()
     object CreateNewClassPressed : MyAccountUiEvent()
-    object EditMyProfilePressed: MyAccountUiEvent()
+    object EditDetailsPressed: MyAccountUiEvent()
+    object ProfileImagePressed: MyAccountUiEvent()
 }

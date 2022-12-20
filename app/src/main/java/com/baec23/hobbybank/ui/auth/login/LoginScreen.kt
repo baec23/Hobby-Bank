@@ -1,12 +1,14 @@
 package com.baec23.hobbybank.ui.auth.login
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -32,18 +34,19 @@ fun LoginScreen(
                     .padding(10.dp)
                     .align(Alignment.CenterHorizontally),
                 text = "LOGIN",
-                fontSize = 30.sp
+                fontSize = 30.sp,
             )
             Spacer(modifier = Modifier.height(10.dp))
             OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
                 value = username,
                 onValueChange = {
                     viewModel.onEvent(LoginUiEvent.UsernameChanged(it))
                 },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                label = { Text(text = "ID") }
+                label = { Text(text = "ID") },
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
             )
             Spacer(modifier = Modifier.height(10.dp))
             OutlinedTextField(

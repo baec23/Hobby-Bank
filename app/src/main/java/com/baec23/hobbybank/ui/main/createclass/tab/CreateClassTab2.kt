@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.baec23.hobbybank.ui.comp.button.HBButton
@@ -65,7 +66,9 @@ fun CreateClassTab2(
                     placeHolder = "최소 인원을 적어 주세요",
                     onValueChange = {
                         viewModel.onEvent(CreateClass2UiEvent.MinStudentsChanged(it))
-                    })
+                    },
+                    imeAction = ImeAction.Next
+                )
                 NumberInputField(
                     modifier = Modifier
                         .weight(1f)
@@ -79,7 +82,9 @@ fun CreateClassTab2(
                     placeHolder = "최대 인원을 적어 주세요",
                     onValueChange = {
                         viewModel.onEvent(CreateClass2UiEvent.MaxStudentsChanged(it))
-                    })
+                    },
+                    imeAction = ImeAction.Next
+                )
             }
 
             TextInputField(
@@ -92,7 +97,8 @@ fun CreateClassTab2(
                 value = location,
                 onValueChanged = { viewModel.onEvent(CreateClass2UiEvent.LocationChanged(it)) },
                 label = "수업 장소",
-                placeholder = "수업 장소를 적어 주세요"
+                placeholder = "수업 장소를 적어 주세요",
+                imeAction = ImeAction.Next
             )
 
             NumberInputField(
@@ -105,7 +111,8 @@ fun CreateClassTab2(
                 value = duration,
                 label = "예상 소요 시간",
                 onValueChange = { viewModel.onEvent(CreateClass2UiEvent.DurationChanged(it)) },
-                placeHolder = "예상 소요 시간을 적어 주세요"
+                placeHolder = "예상 소요 시간을 적어 주세요",
+                imeAction = ImeAction.Next
             )
         }
 
