@@ -16,7 +16,6 @@ import com.baec23.hobbybank.ui.main.home.HomeScreen
 import com.baec23.hobbybank.ui.main.myaccount.MyAccountScreen
 import com.baec23.hobbybank.ui.main.myclassschedule.MyClassScheduleScreen
 import com.baec23.hobbybank.ui.main.viewclassdetails.ViewClassDetailsScreen
-import com.baec23.hobbybank.ui.main.viewclasses.ViewClassesScreen
 
 fun NavGraphBuilder.contentNavGraph() {
     navigation(

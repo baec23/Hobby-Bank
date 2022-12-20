@@ -35,8 +35,9 @@ class HobbyClassRepository {
             val result = hobbyClassRef.add(hobbyClass).await().get().await()
             val documentId = result.id
             val uploadedBitmapUrls = uploadBitmaps(documentId, bitmaps)
-            val savedHobbyClass = result.toObject(HobbyClass::class.java)!!.copy(id = documentId, bitmapUrls = uploadedBitmapUrls)
-            Result.success(savedHobbyClass)
+            val updatedHobbyClass = result.toObject(HobbyClass::class.java)!!.copy(id = documentId, bitmapUrls = uploadedBitmapUrls)
+            hobbyClassRef.document(documentId).set(updatedHobbyClass).await()
+            Result.success(updatedHobbyClass)
         } catch (e: Exception) {
             Result.failure(Exception("Failed to save hobby class : $e"))
         }
@@ -56,7 +57,7 @@ class HobbyClassRepository {
 
         val toReturn: MutableList<String> = mutableListOf()
         toUpload.forEachIndexed { i, bitmap ->
-            val fileName = "class_${classId}_$i"
+            val fileName = "/class_${classId}/${i}.jpg"
             val fileRef = jobsStorageReference.child(fileName)
             val baos = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)

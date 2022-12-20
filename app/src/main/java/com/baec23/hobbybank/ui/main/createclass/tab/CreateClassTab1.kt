@@ -94,7 +94,7 @@ fun CreateClassTab1(
             modifier = Modifier
                 .fillMaxWidth(0.8f)
                 .align(Alignment.CenterHorizontally),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy (16.dp)
         ) {
             HBButton(
                 modifier = Modifier.weight(1f),
