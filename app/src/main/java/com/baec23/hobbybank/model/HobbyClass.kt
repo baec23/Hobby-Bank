@@ -6,5 +6,5 @@ data class HobbyClass(
     val details: String = "",
     val location: String = "",
     val creatorUserId: String = "",
-    val sessions: List<HobbySession> = listOf(),
+    val bitmapUrls: List<String> = listOf()
 )

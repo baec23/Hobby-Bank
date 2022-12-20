@@ -1,9 +1,8 @@
 package com.baec23.hobbybank.ui.main.home
 
-import android.util.Log
-import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.baec23.hobbybank.model.HobbyClass
@@ -11,53 +10,62 @@ import com.baec23.hobbybank.navigation.NavScreen
 import com.baec23.hobbybank.repository.HobbyClassRepository
 import com.baec23.hobbybank.service.NavService
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.collections.contains as contains1
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     hobbyClassRepository: HobbyClassRepository,
     private val navService: NavService,
 ) : ViewModel() {
-    private val _textFieldValue: MutableState<String> = mutableStateOf("")
-    val textFieldValue: State<String> = _textFieldValue
 
-    val allHobbyClassList: StateFlow<List<HobbyClass?>> =
-        hobbyClassRepository.getAllHobbyClasses()
-            .stateIn(viewModelScope, SharingStarted.Lazily, listOf())
+    private val _searchFieldText: MutableState<String> = mutableStateOf("")
+    val searchFieldText: State<String> = _searchFieldText
 
+    private val _filteredHobbyClassList: MutableState<List<HobbyClass>> = mutableStateOf(listOf())
+    val filteredHobbyClassList = _filteredHobbyClassList
 
-    var filteredList: StateFlow<List<HobbyClass?>> =
-        if (textFieldValue.value.isBlank()) {
-            hobbyClassRepository.getAllHobbyClasses()
-                .stateIn(viewModelScope, SharingStarted.Lazily, listOf())
-        } else {
-            Log.d("DEBUG", "asdfasdfasdfasdf")
-            hobbyClassRepository.getAllHobbyClasses().map {
-                it.filter { myHobbyClass ->
-                    myHobbyClass.name.contains(_textFieldValue.value)
-                }
-            }
-                .stateIn(viewModelScope, SharingStarted.Lazily, listOf())
-        }
+    private var allHobbyClassList: List<HobbyClass> = listOf()
 
+    //public function
 
     fun onEvent(event: HomeUiEvent) {
         when (event) {
             is HomeUiEvent.SearchTextChanged -> {
-                _textFieldValue.value = event.textFieldValue
+                _searchFieldText.value = event.textFieldValue
+                doFilter()
             }
 
             is HomeUiEvent.HobbyClassClicked -> {
                 navService.navigate(NavScreen.ViewClassDetails)
             }
+
             HomeUiEvent.SearchTextCleared -> {
-                _textFieldValue.value = ""
+                _searchFieldText.value = ""
+                doFilter()
             }
         }
     }
-
+    init {
+        viewModelScope.launch {
+            hobbyClassRepository.getAllHobbyClasses().collectLatest {
+                allHobbyClassList = it
+                _filteredHobbyClassList.value = it
+            }
+        }
+    }
+    private fun doFilter() {
+        if (_searchFieldText.value.isBlank())
+            _filteredHobbyClassList.value = allHobbyClassList
+        else {
+            _filteredHobbyClassList.value =
+                allHobbyClassList.filter { hobbyClass ->
+                    (hobbyClass.name.contains(_searchFieldText.value) ||
+                            hobbyClass.details.contains(_searchFieldText.value))
+                }
+        }
+    }
 }
 
 sealed class HomeUiEvent {
