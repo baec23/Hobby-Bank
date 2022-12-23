@@ -1,11 +1,11 @@
 package com.baec23.hobbybank.navigation
 
 sealed class NavScreen(
-    route: String,
+    val route: String,
     val displayName: String = "",
     val shouldShowNavBars: Boolean = true,
     val parentRoute: String? = null,
-) : NavDestination(route) {
+){
     //Auth
     object Login : NavScreen(
         route = "login_screen",

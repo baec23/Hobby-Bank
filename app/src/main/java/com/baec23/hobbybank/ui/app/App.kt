@@ -1,6 +1,7 @@
 package com.baec23.hobbybank.ui.app
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -15,6 +16,7 @@ import com.baec23.hobbybank.navigation.RootNavHost
 import com.baec23.hobbybank.navigation.navgraph.bottomNavItems
 import com.baec23.hobbybank.ui.app.comp.BottomNavigationBar
 import com.baec23.hobbybank.ui.app.comp.TopBar
+import com.baec23.hobbybank.ui.comp.backdrop.BlurBackdrop
 
 const val TAG: String = "App"
 
@@ -24,6 +26,7 @@ fun App(
     appViewModel: AppViewModel = hiltViewModel(),
 ) {
     val currScreen by appViewModel.currNavScreen
+    val backdropShown by appViewModel.backdropShown
 
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = appViewModel.snackbarService.snackbarState) },
@@ -32,7 +35,9 @@ fun App(
                 TopBar(
                     modifier = Modifier.height(60.dp),
                     screenName = currScreen.displayName,
-                    onLogout = { appViewModel.onEvent(AppUiEvent.LogoutPressed) })
+                    onToggleBackdrop = { appViewModel.onEvent(AppUiEvent.ToggleBackdrop) },
+                    onLogout = { appViewModel.onEvent(AppUiEvent.LogoutPressed) },
+                )
             }
         },
         bottomBar = {
@@ -49,7 +54,9 @@ fun App(
         }
     ) {
         Column(modifier = Modifier.padding(it)) {
-            RootNavHost(navController = appViewModel.navController)
+            BlurBackdrop(enabled = backdropShown) {
+                RootNavHost(navController = appViewModel.navController)
+            }
         }
     }
 }
