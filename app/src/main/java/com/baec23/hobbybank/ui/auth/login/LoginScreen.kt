@@ -14,6 +14,10 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.baec23.hobbybank.ui.comp.button.HBButton
+import com.baec23.hobbybank.ui.comp.inputfield.PasswordInputField
+import com.baec23.hobbybank.ui.comp.inputfield.TextInputField
+import com.baec23.hobbybank.ui.main.createclass.CreateClass2UiEvent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -26,8 +30,11 @@ fun LoginScreen(
 
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(32.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(32.dp)
         ) {
             Text(
                 modifier = Modifier
@@ -36,39 +43,86 @@ fun LoginScreen(
                 text = "LOGIN",
                 fontSize = 30.sp,
             )
-            Spacer(modifier = Modifier.height(10.dp))
-            OutlinedTextField(
+            TextInputField(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
+                    .fillMaxWidth(),
                 value = username,
-                onValueChange = {
-                    viewModel.onEvent(LoginUiEvent.UsernameChanged(it))
-                },
-                label = { Text(text = "ID") },
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
+                onValueChanged = { viewModel.onEvent(LoginUiEvent.UsernameChanged(it)) },
+                label = "ID",
+                placeholder = "ID를 입력해 주세요",
+                imeAction = ImeAction.Next,
             )
-            Spacer(modifier = Modifier.height(10.dp))
-            OutlinedTextField(
-                value = password,
-                onValueChange = {
-                    viewModel.onEvent(LoginUiEvent.PasswordChanged(it))
-                },
+            PasswordInputField(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                label = { Text(text = "PASSWORD") },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                visualTransformation = PasswordVisualTransformation()
+                    .fillMaxWidth(),
+                value = password,
+                onValueChanged = { viewModel.onEvent(LoginUiEvent.PasswordChanged(it)) },
+                label = "PASSWORD",
+                placeholder = "PASSWORD를 입력해주세요",
+                imeAction = ImeAction.Done
             )
-            Spacer(modifier = Modifier.height(10.dp))
-            OutlinedButton(
-                onClick = { viewModel.onEvent(LoginUiEvent.LoginPressed) }) {
-                Text("Login!")
+
+//
+//            TextInputField(
+//                modifier = Modifier
+//                    .fillMaxWidth(),
+//                value = password,
+//                onValueChanged = { viewModel.onEvent(LoginUiEvent.PasswordChanged(it)) },
+//                label = "PASSWORD",
+//                placeholder = "PASSWORD를 입력해주세요",
+//                imeAction = ImeAction.Done
+//            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(0.8f)
+                    .align(Alignment.CenterHorizontally),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                HBButton(
+                    modifier = Modifier.weight(1f),
+                    onClick = { viewModel.onEvent(LoginUiEvent.LoginPressed) },
+                    text = "Login!"
+                )
+                HBButton(
+                    modifier = Modifier.weight(1f),
+                    onClick = { viewModel.onEvent(LoginUiEvent.SignUpPressed) },
+                    text ="Sign up!"
+                )
             }
-            OutlinedButton(onClick = { viewModel.onEvent(LoginUiEvent.SignUpPressed) }) {
-                Text("Sign up!")
-            }
+
+
+//            OutlinedTextField(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(16.dp),
+//                value = username,
+//                onValueChange = {
+//                    viewModel.onEvent(LoginUiEvent.UsernameChanged(it))
+//                },
+//                label = { Text(text = "ID") },
+//                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
+//            )
+//            Spacer(modifier = Modifier.height(10.dp))
+//            OutlinedTextField(
+//                value = password,
+//                onValueChange = {
+//                    viewModel.onEvent(LoginUiEvent.PasswordChanged(it))
+//                },
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(16.dp),
+//                label = { Text(text = "PASSWORD") },
+//                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+//                visualTransformation = PasswordVisualTransformation()
+//            )
+//            Spacer(modifier = Modifier.height(10.dp))
+//            OutlinedButton(
+//                onClick = { viewModel.onEvent(LoginUiEvent.LoginPressed) }) {
+//                Text("Login!")
+//            }
+//            OutlinedButton(onClick = { viewModel.onEvent(LoginUiEvent.SignUpPressed) }) {
+//                Text("Sign up!")
+//            }
         }
     }
 }
