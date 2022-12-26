@@ -37,6 +37,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.baec23.hobbybank.ui.comp.button.ButtonState
 import com.baec23.hobbybank.ui.comp.button.HBButton
 import com.baec23.hobbybank.ui.comp.button.HBButton3
+import com.baec23.hobbybank.ui.comp.form.InputForm
+import com.baec23.hobbybank.ui.comp.inputfield.TextInputField2
 import com.baec23.hobbybank.ui.comp.section.DisplaySection
 import com.baec23.hobbybank.ui.comp.section.ExpandableDisplaySection
 import com.baec23.hobbybank.ui.comp.section.ExpandableDisplaySection2
@@ -102,6 +104,11 @@ fun ViewClassDetailsScreen(
             .verticalScroll(state = rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        var textValue by remember{mutableStateOf("Hello")}
+        DisplaySection(headerText = "InputField Test") {
+            InputForm()
+        }
+
         var isExpanded by remember { mutableStateOf(false) }
         ExpandableDisplaySection2(
             isExpanded = isExpanded,
