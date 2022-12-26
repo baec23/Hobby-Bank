@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -33,9 +34,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.baec23.hobbybank.ui.comp.button.ButtonState
 import com.baec23.hobbybank.ui.comp.button.HBButton
-import com.baec23.hobbybank.ui.comp.button.HBButton2
+import com.baec23.hobbybank.ui.comp.button.HBButton3
 import com.baec23.hobbybank.ui.comp.section.DisplaySection
+import com.baec23.hobbybank.ui.comp.section.ExpandableDisplaySection
+import com.baec23.hobbybank.ui.comp.section.ExpandableDisplaySection2
 import com.baec23.hobbybank.ui.comp.togglable.ToggleableIcon
 import com.baec23.hobbybank.ui.comp.togglable.ToggleableIconColumn
 import com.baec23.hobbybank.ui.comp.togglable.ToggleableIconHorizontalGrid
@@ -98,8 +102,39 @@ fun ViewClassDetailsScreen(
             .verticalScroll(state = rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        var isExpanded by remember { mutableStateOf(false) }
+        ExpandableDisplaySection2(
+            isExpanded = isExpanded,
+            onExpand = { isExpanded = !isExpanded },
+            headerText = "Expandable Section Test",
+            headerSubtext = "Hello this is an expandable section with a long ass subtext",
+        ) {
+            ToggleableIconRow(
+                toggleableIconDataList = toggleableItems,
+                onItemToggle = { viewModel.onEvent(ViewClassDetailsUiEvent.OnIconToggled(it)) }) {
+                ToggleableIcon(toggleableIconData = it)
+            }
+            HBButton3(
+                text = "Test Button",
+                onClick = {},
+            )
+            Text("Lalalala")
+            Text("Lalalalasdfa")
+            Text("Lalalfdsafsadfala")
+            Text("Lalasdfasdfalala")
+            Text("Lalalasdfasdfala")
+        }
+
+
         DisplaySection(headerText = "Button Test") {
-            HBButton2(onClick = { }, text = "Test Button")
+            var buttonState by remember { mutableStateOf(ButtonState.Idle) }
+            HBButton3(
+                text = "Test Button 3",
+                onClick = {
+                    buttonState =
+                        if (buttonState != ButtonState.Loading) ButtonState.Loading else ButtonState.Idle
+                }, state = buttonState
+            )
         }
 
         DisplaySection(headerText = "Dialog/Popup Test") {

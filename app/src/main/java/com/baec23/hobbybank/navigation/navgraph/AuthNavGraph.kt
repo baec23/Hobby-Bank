@@ -7,6 +7,7 @@ import com.baec23.hobbybank.navigation.AUTH_NAV_GRAPH_ROUTE
 import com.baec23.hobbybank.navigation.NavScreen
 import com.baec23.hobbybank.ui.auth.login.LoginScreen
 import com.baec23.hobbybank.ui.auth.signup.SignupScreen
+import com.baec23.hobbybank.ui.main.viewclassdetails.ViewClassDetailsScreen
 
 fun NavGraphBuilder.authNavGraph() {
     navigation(
@@ -14,7 +15,8 @@ fun NavGraphBuilder.authNavGraph() {
         route = AUTH_NAV_GRAPH_ROUTE
     ) {
         composable(route = NavScreen.Login.route) {
-            LoginScreen()
+//            LoginScreen()
+            ViewClassDetailsScreen()
         }
         composable(route = NavScreen.Signup.route) {
             SignupScreen()
