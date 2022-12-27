@@ -82,7 +82,7 @@ fun CreateClassTab1(
         ) {
             TextInputField(
                 value = className,
-                onValueChanged = { viewModel.onEvent(CreateClass1UiEvent.NameChanged(it)) },
+                onValueChange = { viewModel.onEvent(CreateClass1UiEvent.NameChanged(it)) },
                 label = "수업 제목",
                 placeholder = "수업 제목을 적어 주세요"
             )

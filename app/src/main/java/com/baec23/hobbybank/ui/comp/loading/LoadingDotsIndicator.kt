@@ -9,6 +9,7 @@ import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
@@ -23,13 +24,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
-
-
 @Composable
 fun LoadingDotsIndicator(
     modifier: Modifier = Modifier,
+    dotSpacing: Dp = 8.dp
 ) {
     var loadingAnimationState by remember { mutableStateOf(LoadingAnimationState.Blank) }
 
@@ -55,36 +56,35 @@ fun LoadingDotsIndicator(
         }
     }
 
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Box(
-            modifier = Modifier
-                .weight(0.3f),
-            contentAlignment = Alignment.Center
+    Box(modifier = modifier, contentAlignment = Alignment.Center){
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(dotSpacing)
         ) {
-            LoadingDot(
-                isVisible = loadingAnimationState != LoadingAnimationState.Blank
-            )
-        }
-        Box(
-            modifier = Modifier
-                .weight(0.3f),
-            contentAlignment = Alignment.Center
-        ) {
-            LoadingDot(
-                isVisible = loadingAnimationState == LoadingAnimationState.SecondDotVisible || loadingAnimationState == LoadingAnimationState.ThirdDotVisible
-            )
-        }
-        Box(
-            modifier = Modifier
-                .weight(0.3f),
-            contentAlignment = Alignment.Center
-        ) {
-            LoadingDot(
-                isVisible = loadingAnimationState == LoadingAnimationState.ThirdDotVisible
-            )
+            Box(
+                modifier = Modifier.weight(0.3f),
+                contentAlignment = Alignment.Center
+            ) {
+                LoadingDot(
+                    isVisible = loadingAnimationState != LoadingAnimationState.Blank
+                )
+            }
+            Box(
+                modifier = Modifier.weight(0.3f),
+                contentAlignment = Alignment.Center
+            ) {
+                LoadingDot(
+                    isVisible = loadingAnimationState == LoadingAnimationState.SecondDotVisible || loadingAnimationState == LoadingAnimationState.ThirdDotVisible
+                )
+            }
+            Box(
+                modifier = Modifier.weight(0.3f),
+                contentAlignment = Alignment.Center
+            ) {
+                LoadingDot(
+                    isVisible = loadingAnimationState == LoadingAnimationState.ThirdDotVisible
+                )
+            }
         }
     }
 }

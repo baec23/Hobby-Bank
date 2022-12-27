@@ -10,6 +10,7 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.TextStyle
@@ -28,7 +29,7 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Yellow,
+    primary = Color.Black,
     secondary = Brown,
     tertiary = Beige,
     primaryContainer = Ivory,
@@ -156,13 +157,13 @@ fun HobbyBankTheme(
 
         bodyLarge = TextStyle(
             lineHeight = 24.sp,
-            fontSize = 16.sp,
+            fontSize = 18.sp,
             fontFamily = GongGothicFontFamily,
             fontWeight = FontWeight.Light
         ),
         bodyMedium = TextStyle(
-            lineHeight = 20.sp,
-            fontSize = 14.sp,
+            lineHeight = 21.sp,
+            fontSize = 16.sp,
             fontFamily = GongGothicFontFamily,
             fontWeight = FontWeight.Light
         ),

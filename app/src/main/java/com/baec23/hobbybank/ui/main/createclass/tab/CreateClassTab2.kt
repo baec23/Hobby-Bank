@@ -95,10 +95,9 @@ fun CreateClassTab2(
                         previous = maxStudentsRef
                     },
                 value = location,
-                onValueChanged = { viewModel.onEvent(CreateClass2UiEvent.LocationChanged(it)) },
+                onValueChange = { viewModel.onEvent(CreateClass2UiEvent.LocationChanged(it)) },
                 label = "수업 장소",
                 placeholder = "수업 장소를 적어 주세요",
-                imeAction = ImeAction.Next
             )
 
             NumberInputField(
@@ -124,7 +123,7 @@ fun CreateClassTab2(
                     .focusRequester(detailsRef)
                     .focusProperties { previous = durationRef },
                 value = details,
-                onValueChanged = { viewModel.onEvent(CreateClass2UiEvent.DetailsChanged(it)) },
+                onValueChange = { viewModel.onEvent(CreateClass2UiEvent.DetailsChanged(it)) },
                 label = "수업 설명",
                 placeholder = "수업을 자세히 설명 해 주세요\n예) 수업 소개",
                 singleLine = false,

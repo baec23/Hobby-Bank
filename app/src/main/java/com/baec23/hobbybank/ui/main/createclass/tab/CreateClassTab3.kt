@@ -79,7 +79,7 @@ fun CreateClassTab3(
                 TextInputField(
                     modifier = Modifier.weight(0.9f),
                     value = selectedDate,
-                    onValueChanged = {},
+                    onValueChange = {},
                     label = "날자",
                     readOnly = true
                 )
@@ -101,7 +101,7 @@ fun CreateClassTab3(
                 TextInputField(
                     modifier = Modifier.weight(0.9f),
                     value = selectedTime,
-                    onValueChanged = {},
+                    onValueChange = {},
                     label = "시간",
                     readOnly = true
                 )

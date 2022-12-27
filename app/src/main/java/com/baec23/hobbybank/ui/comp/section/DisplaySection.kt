@@ -9,6 +9,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -43,6 +44,7 @@ fun DisplaySection(
     headerIcon: ImageVector? = null,
     dividerColor: Color = MaterialTheme.colorScheme.primary,
     contentSpacing: Dp = 12.dp,
+    contentPadding: PaddingValues = PaddingValues(horizontal = 8.dp, vertical = 16.dp),
     content: @Composable () -> Unit
 ) {
     Column(modifier = modifier) {
@@ -75,7 +77,7 @@ fun DisplaySection(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp, horizontal = 4.dp)
+                .padding(contentPadding)
                 .align(Alignment.CenterHorizontally),
             verticalArrangement = Arrangement.spacedBy(contentSpacing)
         ) {
@@ -93,6 +95,7 @@ fun ExpandableDisplaySection2(
     headerSubtext: String? = null,
     dividerColor: Color = MaterialTheme.colorScheme.primary,
     contentSpacing: Dp = 12.dp,
+    contentPadding: PaddingValues = PaddingValues(horizontal = 8.dp, vertical = 16.dp),
     content: @Composable () -> Unit
 ) {
     val arrowRotation by animateFloatAsState(targetValue = if (isExpanded) 90f else 0f)
@@ -131,7 +134,7 @@ fun ExpandableDisplaySection2(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 8.dp, horizontal = 4.dp)
+                    .padding(contentPadding)
                     .align(Alignment.CenterHorizontally),
                 verticalArrangement = Arrangement.spacedBy(contentSpacing)
             ) {
