@@ -1,6 +1,5 @@
 package com.baec23.hobbybank.ui.comp.togglable
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -8,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -22,12 +22,15 @@ import com.baec23.hobbybank.ui.comp.fadinglazy.FadingLazyVerticalGrid
 @Composable
 fun ToggleableIconRow(
     modifier: Modifier = Modifier,
-    toggleableIconDataList: List<ToggleableIconData>,
-    onItemToggle: (Int) -> Unit,
+    toggleableIconListItems: List<ToggleableIconListItem>,
     contentPadding: PaddingValues = PaddingValues(0.dp),
     horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
     verticalAlignment: Alignment.Vertical = Alignment.Top,
-    itemContent: @Composable (ToggleableIconData) -> Unit,
+    toggledOnColor: Color = MaterialTheme.colorScheme.primary,
+    toggledOffColor: Color = Color.LightGray,
+    toggledOnScale: Float = 1f,
+    toggledOffScale: Float = 0.75f,
+    onItemToggle: (Int) -> Unit,
 ) {
     FadingLazyRow(
         modifier = modifier,
@@ -35,16 +38,18 @@ fun ToggleableIconRow(
         horizontalArrangement = horizontalArrangement,
         verticalAlignment = verticalAlignment
     ) {
-        items(toggleableIconDataList.count()) {
-            Box(modifier = Modifier
-                .wrapContentSize()
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null
-                ) {
-                    onItemToggle(it)
-                }) {
-                itemContent(toggleableIconDataList[it])
+        items(toggleableIconListItems.count()) { itemIndex ->
+            val item = toggleableIconListItems[itemIndex]
+            ToggleableIcon(
+                isToggled = item.isToggled,
+                imageVector = item.iconImageVector,
+                label = item.label,
+                toggledOnColor = toggledOnColor,
+                toggledOffColor = toggledOffColor,
+                toggledOnScale = toggledOnScale,
+                toggledOffScale = toggledOffScale
+            ){
+                onItemToggle(itemIndex)
             }
         }
     }
@@ -53,30 +58,34 @@ fun ToggleableIconRow(
 @Composable
 fun ToggleableIconColumn(
     modifier: Modifier = Modifier,
-    toggleableIconDataList: List<ToggleableIconData>,
-    onItemToggle: (Int) -> Unit,
+    toggleableIconListItems: List<ToggleableIconListItem>,
     contentPadding: PaddingValues = PaddingValues(0.dp),
     verticalArrangement: Arrangement.Vertical = Arrangement.Top,
     horizontalAlignment: Alignment.Horizontal = Alignment.Start,
-    itemContent: @Composable (ToggleableIconData) -> Unit,
+    toggledOnColor: Color = MaterialTheme.colorScheme.primary,
+    toggledOffColor: Color = Color.LightGray,
+    toggledOnScale: Float = 1f,
+    toggledOffScale: Float = 0.75f,
+    onItemToggle: (Int) -> Unit,
 ) {
-
     FadingLazyColumn(
         modifier = modifier,
         contentPadding = contentPadding,
-        verticalArrangement = verticalArrangement,
-        horizontalAlignment = horizontalAlignment
+        horizontalAlignment = horizontalAlignment,
+        verticalArrangement = verticalArrangement
     ) {
-        items(toggleableIconDataList.count()) {
-            Box(modifier = Modifier
-                .wrapContentSize()
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null
-                ) {
-                    onItemToggle(it)
-                }) {
-                itemContent(toggleableIconDataList[it])
+        items(toggleableIconListItems.count()) { itemIndex ->
+            val item = toggleableIconListItems[itemIndex]
+            ToggleableIcon(
+                isToggled = item.isToggled,
+                imageVector = item.iconImageVector,
+                label = item.label,
+                toggledOnColor = toggledOnColor,
+                toggledOffColor = toggledOffColor,
+                toggledOnScale = toggledOnScale,
+                toggledOffScale = toggledOffScale
+            ){
+                onItemToggle(itemIndex)
             }
         }
     }
@@ -86,12 +95,15 @@ fun ToggleableIconColumn(
 fun ToggleableIconVerticalGrid(
     modifier: Modifier = Modifier,
     columns: GridCells,
-    toggleableIconDataList: List<ToggleableIconData>,
-    onItemToggle: (Int) -> Unit,
+    toggleableIconListItems: List<ToggleableIconListItem>,
     contentPadding: PaddingValues = PaddingValues(0.dp),
     verticalArrangement: Arrangement.Vertical = Arrangement.Top,
     horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
-    itemContent: @Composable (ToggleableIconData) -> Unit,
+    toggledOnColor: Color = MaterialTheme.colorScheme.primary,
+    toggledOffColor: Color = Color.LightGray,
+    toggledOnScale: Float = 1f,
+    toggledOffScale: Float = 0.75f,
+    onItemToggle: (Int) -> Unit,
 ) {
     FadingLazyVerticalGrid(
         modifier = modifier,
@@ -100,16 +112,18 @@ fun ToggleableIconVerticalGrid(
         verticalArrangement = verticalArrangement,
         horizontalArrangement = horizontalArrangement
     ) {
-        items(toggleableIconDataList.count()) {
-            Box(modifier = Modifier
-                .wrapContentSize()
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null
-                ) {
-                    onItemToggle(it)
-                }) {
-                itemContent(toggleableIconDataList[it])
+        items(toggleableIconListItems.count()) { itemIndex ->
+            val item = toggleableIconListItems[itemIndex]
+            ToggleableIcon(
+                isToggled = item.isToggled,
+                imageVector = item.iconImageVector,
+                label = item.label,
+                toggledOnColor = toggledOnColor,
+                toggledOffColor = toggledOffColor,
+                toggledOnScale = toggledOnScale,
+                toggledOffScale = toggledOffScale
+            ){
+                onItemToggle(itemIndex)
             }
         }
     }
@@ -119,12 +133,15 @@ fun ToggleableIconVerticalGrid(
 fun ToggleableIconHorizontalGrid(
     modifier: Modifier = Modifier,
     rows: GridCells,
-    toggleableIconDataList: List<ToggleableIconData>,
-    onItemToggle: (Int) -> Unit,
+    toggleableIconListItems: List<ToggleableIconListItem>,
     contentPadding: PaddingValues = PaddingValues(0.dp),
-    horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
     verticalArrangement: Arrangement.Vertical = Arrangement.Top,
-    itemContent: @Composable (ToggleableIconData) -> Unit,
+    horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
+    toggledOnColor: Color = MaterialTheme.colorScheme.primary,
+    toggledOffColor: Color = Color.LightGray,
+    toggledOnScale: Float = 1f,
+    toggledOffScale: Float = 0.75f,
+    onItemToggle: (Int) -> Unit,
 ) {
     FadingLazyHorizontalGrid(
         modifier = modifier,
@@ -133,16 +150,18 @@ fun ToggleableIconHorizontalGrid(
         horizontalArrangement = horizontalArrangement,
         verticalArrangement = verticalArrangement
     ) {
-        items(toggleableIconDataList.count()) {
-            Box(modifier = Modifier
-                .wrapContentSize()
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null
-                ) {
-                    onItemToggle(it)
-                }) {
-                itemContent(toggleableIconDataList[it])
+        items(toggleableIconListItems.count()) { itemIndex ->
+            val item = toggleableIconListItems[itemIndex]
+            ToggleableIcon(
+                isToggled = item.isToggled,
+                imageVector = item.iconImageVector,
+                label = item.label,
+                toggledOnColor = toggledOnColor,
+                toggledOffColor = toggledOffColor,
+                toggledOnScale = toggledOnScale,
+                toggledOffScale = toggledOffScale
+            ){
+                onItemToggle(itemIndex)
             }
         }
     }

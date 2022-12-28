@@ -1,7 +1,6 @@
 package com.baec23.hobbybank.ui.comp.section
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -9,6 +8,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -45,7 +45,7 @@ fun DisplaySection(
     dividerColor: Color = MaterialTheme.colorScheme.primary,
     contentSpacing: Dp = 12.dp,
     contentPadding: PaddingValues = PaddingValues(horizontal = 8.dp, vertical = 16.dp),
-    content: @Composable () -> Unit
+    content: @Composable ColumnScope.() -> Unit
 ) {
     Column(modifier = modifier) {
         Row(verticalAlignment = Alignment.Bottom) {
@@ -87,16 +87,16 @@ fun DisplaySection(
 }
 
 @Composable
-fun ExpandableDisplaySection2(
+fun ExpandableDisplaySection(
     modifier: Modifier = Modifier,
-    isExpanded: Boolean = false,
-    onExpand: () -> Unit,
+    isExpanded: Boolean,
     headerText: String,
+    onExpand: () -> Unit,
     headerSubtext: String? = null,
     dividerColor: Color = MaterialTheme.colorScheme.primary,
     contentSpacing: Dp = 12.dp,
     contentPadding: PaddingValues = PaddingValues(horizontal = 8.dp, vertical = 16.dp),
-    content: @Composable () -> Unit
+    content: @Composable ColumnScope.() -> Unit
 ) {
     val arrowRotation by animateFloatAsState(targetValue = if (isExpanded) 90f else 0f)
     Column(modifier = modifier) {
@@ -135,74 +135,6 @@ fun ExpandableDisplaySection2(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(contentPadding)
-                    .align(Alignment.CenterHorizontally),
-                verticalArrangement = Arrangement.spacedBy(contentSpacing)
-            ) {
-                content()
-            }
-        }
-    }
-}
-
-@Composable
-fun ExpandableDisplaySection(
-    modifier: Modifier = Modifier,
-    isExpanded: Boolean = false,
-    onExpand: () -> Unit,
-    headerText: String,
-    headerSubtext: String? = null,
-    headerIcon: ImageVector? = null,
-    dividerColor: Color = MaterialTheme.colorScheme.primary,
-    contentSpacing: Dp = 12.dp,
-    content: @Composable () -> Unit
-) {
-    val contentHeight by animateDpAsState(targetValue = if (isExpanded) 400.dp else 0.dp)
-    val arrowRotation by animateFloatAsState(targetValue = if (isExpanded) 90f else 0f)
-
-    Column(modifier = modifier) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable(interactionSource = MutableInteractionSource(), indication = null) {
-                    onExpand()
-                }, verticalAlignment = Alignment.Bottom,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            headerIcon?.let {
-                Icon(
-                    modifier = Modifier.size(50.dp, 50.dp),
-                    imageVector = headerIcon,
-                    contentDescription = headerText,
-                    tint = MaterialTheme.colorScheme.primary
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-            }
-            Text(
-                text = headerText,
-                style = MaterialTheme.typography.labelLarge,
-                textAlign = TextAlign.Start,
-            )
-            Icon(
-                modifier = Modifier.rotate(arrowRotation),
-                imageVector = Icons.Default.ArrowForward,
-                contentDescription = "expand"
-            )
-        }
-        headerSubtext?.let {
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = headerSubtext,
-                style = MaterialTheme.typography.labelSmall,
-                textAlign = TextAlign.Start
-            )
-        }
-        Spacer(modifier = Modifier.height(2.dp))
-        Divider(color = dividerColor, thickness = 2.dp)
-        AnimatedVisibility(visible = isExpanded) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp, horizontal = 4.dp)
                     .align(Alignment.CenterHorizontally),
                 verticalArrangement = Arrangement.spacedBy(contentSpacing)
             ) {

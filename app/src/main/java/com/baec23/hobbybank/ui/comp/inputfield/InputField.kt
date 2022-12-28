@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -41,8 +42,56 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+
+
+@Composable
+fun InputField2(
+    modifier: Modifier = Modifier,
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: String? = null,
+    placeholder: String? = null,
+    hasError: Boolean = false,
+    errorMessage: String? = null,
+) {
+    Column(modifier = modifier) {
+        label?.let {
+            Text(text = label, fontSize = 12.sp)
+        }
+
+        BasicTextField(
+            value = value,
+            onValueChange = onValueChange,
+            decorationBox = {
+                Box(contentAlignment = Alignment.CenterStart) {
+                    placeholder?.let {
+                        if (value.isBlank())
+                            Text(text = placeholder, fontSize = 14.sp, color = Color.LightGray)
+                    }
+                    it()
+                }
+            })
+
+        Divider(modifier = modifier, color = if (hasError) Color.Red else Color.Black)
+        if (hasError && errorMessage != null)
+            Text(modifier = Modifier.align(Alignment.End), text = errorMessage, color = Color.Red, fontSize = 14.sp)
+    }
+}
+
+@Preview
+@Composable
+fun InputField2Preview() {
+    var fieldValue by remember { mutableStateOf("default value") }
+    InputField2(
+        value = fieldValue,
+        onValueChange = { fieldValue = it },
+        label = "InputField2 Test"
+    )
+}
 
 @Composable
 fun InputField(
@@ -106,6 +155,7 @@ fun InputField(
         }) { if (it) currScreenWidth else 0f }
 
     Column(modifier = modifier) {
+
         label?.let {
             Text(
                 modifier = Modifier.alpha(focusAlpha),
@@ -116,6 +166,7 @@ fun InputField(
             )
             Spacer(modifier = Modifier.height(8.dp))
         }
+
         BasicTextField(
             modifier = modifier
                 .onFocusEvent { focusState -> isFocused = focusState.isFocused }

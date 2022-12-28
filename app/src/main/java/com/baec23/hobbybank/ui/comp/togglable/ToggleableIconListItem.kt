@@ -2,13 +2,13 @@ package com.baec23.hobbybank.ui.comp.togglable
 
 import androidx.compose.ui.graphics.vector.ImageVector
 
-data class ToggleableIconData(
+data class ToggleableIconListItem(
     val name: String,
-    val icon: ImageVector,
+    val iconImageVector: ImageVector,
     val label: String? = null,
     val isToggled: Boolean = false,
 ) {
-    fun doToggle(): ToggleableIconData {
+    fun doToggle(): ToggleableIconListItem {
         return this.copy(isToggled = !isToggled)
     }
 }
